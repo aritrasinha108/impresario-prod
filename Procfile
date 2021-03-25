@@ -1,1 +1,1 @@
-web: gunicorn impresario.wsgi --log-file -
+web: gunicorn impresario.wsgi:application --log-file -
