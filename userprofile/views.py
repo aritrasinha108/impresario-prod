@@ -315,8 +315,8 @@ def add_event(request, org_id):
             start_time = request.POST['start-time']
             end_date = request.POST['end-date']
             end_time = request.POST['end-time']
-            start = str(start_date) +" "+str(start_time) + '+00:00'
-            end = str(end_date) +" "+str(end_time)+ '+00:00'
+            start = str(start_date) +" "+str(start_time) + '+0000'
+            end = str(end_date) +" "+str(end_time)+ '+0000'
             title = request.POST['title']
             start = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M%z")
             end= datetime.datetime.strptime(end, "%Y-%m-%d %H:%M%z")
