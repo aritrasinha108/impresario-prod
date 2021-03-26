@@ -63,6 +63,7 @@ class Membershiplevel(models.Model):
 
     @classmethod
     def create_team(self,members,org,par_id,u):
+        print("#############################")
         # for member in members :
         #     role_in_par=self.objects.get(user_id=member.id,organization_id=par_id)
         #     m = self.objects.create(user=member,organization=org,hierarchy=role_in_par.hierarchy,role=role_in_par.role)
@@ -74,7 +75,6 @@ class Membershiplevel(models.Model):
                     m = self.objects.create(user=member,organization=org,hierarchy=role_in_par.hierarchy,role=1)
                 else:
                     m = self.objects.create(user=member,organization=org,hierarchy=role_in_par.hierarchy,role=role_in_par.role)
-
             else:
                 # role_in_par=self.objects.get(user_id=member.id)
                 if u == member.id :
@@ -162,8 +162,10 @@ class Teamrequest(models.Model):
         return team_name+ self.team_name
     @classmethod
     def create_team_req(self,user,team_name,description,par_id,members):
+        print("########members:",members)
         tr=self.objects.create(sender=user,team_name=team_name,team_description=description,par_org_id=par_id)
         tr.team_members.set(members)
+        print("%%%%%%%%%%%tr.team_members:",tr.team_members.all())
         tr.save()
         print(tr)
 

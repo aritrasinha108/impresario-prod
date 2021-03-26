@@ -75,9 +75,13 @@ def team_request(request, par_id) :
     if request.user.is_authenticated:
         user = request.user
         top_org = Organization.get_top_org(par_id)
+        print("top_org:",top_org)
         all_sub_org = Organization.get_all_children(top_org)
+        print("sub orgs:",all_sub_org)
         sub_org = Membershiplevel.get_subgroups(all_sub_org, user)
+        print("sunGroups:",sub_org)
         tr_request = Teamrequest.objects.filter(par_org__in = sub_org, status = 2) 
+        print("team request:",tr_request)
         print(tr_request) 
         return render(request,'team_request.html',{'team_request':tr_request,'user':request.user })
     else:
@@ -269,8 +273,17 @@ def edit_team(request, org_id) :
 def ajax_change_status(request):
     if request.user.is_authenticated:
         request_status = request.GET.get('request_status', 2)
+        print("request_status:",request_status)
         request_id = request.GET.get('request_id', False)
+        print("request_id:",request_id)
         team_request = Teamrequest.objects.get(pk=request_id)
+        print("team_request:",team_request)
+        print("requestStatus:",team_request.status)
+        print("Name:",team_request.team_name)
+        print("Sender:",team_request.sender.id)
+        print("description:",team_request.team_description)
+        print("par_org:",team_request.par_org)
+        print("members:",team_request.team_members.all())
         try:
             request_status = int(request_status)
             if team_request.status == 1 :
@@ -278,6 +291,10 @@ def ajax_change_status(request):
             elif team_request.status == 0 :
                 return JsonResponse({"success": True,"status":"already rejected"})
             elif request_status == 1:
+                print("entered")
+                org = Organization.objects.create(name = team_request.team_name,parent_org_id = team_request.par_org.id)
+                print("org:",org)
+                Membershiplevel.create_team(team_request.team_members.all(),org,team_request.par_org,team_request.sender.id)
                 team_request.status=1
                 team_request.save()
                 return JsonResponse({"success": True,"status":"approved"})
@@ -286,9 +303,11 @@ def ajax_change_status(request):
                 team_request.save()
                 return JsonResponse({"success": True,"status":"rejected"}) 
         except Exception as e:
+            print("Exceptiion:",Exception)
             return JsonResponse({"success": False})
     else:
         return redirect('/userauth/login')
+
 
 
 def show_team(request, team_id):
