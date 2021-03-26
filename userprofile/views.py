@@ -127,6 +127,7 @@ def leave_team(request,org_id):
         warning=''     
         flag = False
         par_id = Organization.objects.get(pk=org_id).parent_org_id
+        name = Organization.objects.get(pk=org_id).name
         while par_id is not None:
             role = Membershiplevel.objects.get(user_id = request.user.id, organization__id = par_id).role
             if role == 1:
@@ -155,7 +156,7 @@ def leave_team(request,org_id):
                             # if count of admin >1 then he will easily leave the team
                             if admin>1:
                                 Membershiplevel.leave_team(p,org)
-                                warning = "left the team"
+                                warning = "Left the team"
                             else:  # if count of admin is one then before leaving some random person should be made as admin
                                 members = Membershiplevel.objects.filter(organization__id = org)
                                 # accessing the member of team which was first added to team. 
@@ -165,16 +166,16 @@ def leave_team(request,org_id):
                                 Membershiplevel.change_role(q,org)
                                 # admin leaving the team
                                 Membershiplevel.leave_team(p,org)
-                                warning = "left the team"
+                                warning = "Left the team"
                         else:
                             # if the person is participant
                             Membershiplevel.leave_team(p,org)
-                            warning = "left the team"
+                            warning = "Left the team"
                     else: 
                         Membershiplevel.leave_team(p,org)
                         Organization.delete_org(org)
-                        warning = "left the team"
-        return render(request,'leave_team.html',{'warning':warning,'user':request.user},)
+                        warning = "Left the team"
+        return render(request,'leave_team.html',{'warning':warning,'user':request.user,'name':name},)
     else:
         return redirect('userauth/login')
 

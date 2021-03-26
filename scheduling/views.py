@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
 from .models import Organization,Membershiplevel
+from django.db.models import Max
 # Create your views here.
 
 #builds the org_tree
@@ -11,10 +12,17 @@ def org_tree(request):
         return redirect('/userauth/login')
 
     queryset_roles = Membershiplevel.objects.filter(user__username = request.user.username)
-    print(queryset_roles)
     queryset = Organization.objects.all()
+    mq = queryset_roles.aggregate(Max('organization__id'))
+    # try:
+    #     mx = Organization.objects.latest('id')
+    # except Organization.DoesNotExist:
+    #     mx = None
     
-    adj = [[] for i in range(len(queryset)+1)]
+    if mq['organization__id__max'] is None:
+        adj = [[] for i in range(len(queryset_roles)+1)]
+    else:
+        adj = [[] for i in range(mq['organization__id__max']+1)]
     name_dict = {}
 
     for i in queryset_roles:

@@ -46,9 +46,10 @@
                 {% ifequal role 1 %}
                 <li><a href="{% url 'change_role' par_id %}">Change Role</a></li>
                 <li><a href="{% url 'dismiss_admin' par_id %}">Change Role to Participant</a></li>
+                
                 <li><a href="{% url 'edit_team' par_id %}">Edit Team</a></li>
                 {% endifequal %}
-                <li><a href="{% url 'leave_team' par_id %}">Leave Team</a></li>
+                <li><a onclick="return confirm('Are you sure to leave the team?')" href="{% url 'leave_team' par_id %}" target="_self">Leave Team</a></li>
         </div>
     </ul>
 </div>
