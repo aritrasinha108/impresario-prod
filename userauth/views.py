@@ -12,7 +12,7 @@ def register_user(request):
     if request.method == 'POST':
         try:
             prevuser = User.objects.get(username=request.POST['username'])
-            return render(request,'register.html',{'error_message':"User already exists!!"})
+            return render(request,'register.html',{'warning':"User already exists!!"})
         except User.DoesNotExist:
             if request.POST['password']==request.POST['password2']:
                 user=User.objects.create_user(request.POST['username'],request.POST['email'].lower(),request.POST['password'])
@@ -27,7 +27,7 @@ def register_user(request):
 
                 
             else:
-                return render(request,'register.html',{'error_message':"Passwords do not match!!"})
+                return render(request,'register.html',{'warning':"Passwords do not match!!"})
     return render(request,'register.html',{})
 
 def login_user(request):
@@ -37,7 +37,7 @@ def login_user(request):
             login(request,user)
             return redirect('/userauth')
         else:
-            return render(request,'login.html',{'error_message':"Incorrect username or password"})
+            return render(request,'login.html',{'warning':"Incorrect username or password"})
 
     return render(request,'login.html',{})
     

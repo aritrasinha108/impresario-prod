@@ -63,6 +63,13 @@ footer {
       {% endif %}
   </div>
 </nav>
+
+{% if warning %}
+<div class="alert alert-primary" role="alert">
+  {{warning}}
+</div>
+{% endif %}
+
 {% block body %}
 {% endblock %}
 

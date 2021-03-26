@@ -35,7 +35,7 @@ def create_team(request,par_id) :
             if Organization.objects.filter(name = team_name,parent_org__id = par_id).exists():
                 warning = "team with that name already exists"
             elif Membershiplevel.objects.get(user_id = request.user.id,organization_id = par_id).role == 1 : #If user is an admin
-                org = Organization.objects.create(name = team_name,parent_org_id = par_id)
+                org = Organization.objects.create(name = team_name,parent_org_id = par_id,description = description)
                 members = User.objects.filter(pk__in = members)
                 #Membershiplevel.create_team(members,org,par_id)
                 Membershiplevel.create_team(members,org,par_id,request.user.id)
@@ -348,9 +348,9 @@ def add_event(request, org_id):
             if event['id']:
                 new_event = Event.objects.create(organization = org, title= title, description= description, location = location, start_time = start, end_time = end, status = 0, eventId = event['id'] )
                 new_event.save()
-                return render(request,"add_event.html",{"warning": "Success", "org":org,'user':request.user})
+                return render(request,"add_event.html",{"warning": "Success! Event Created", "org":org,'user':request.user})
             else:
-                return render(request,"add_event.html",{"warning": "Failure","org":org,'user':request.user })
+                return render(request,"add_event.html",{"warning": "Failure! Couldn't create event, please try again","org":org,'user':request.user })
         else:
             return render(request, 'add_event.html', {"org": org,'user':request.user})
     else:
@@ -399,7 +399,7 @@ def update_event(request,event_id):
         updated_event  = google_update_event(event.eventId, title, description, location, start, end, status)
         # print(updated_event)
         if not updated_event.get('id'):
-            return render(request, 'update_event.html', {"event": event,'user':request.user})
+            return render(request, 'update_event.html', {"event": event,'user':request.user,'warning':"Couldn't update event"})
 
         event.eventId = updated_event['id']
         event.title = updated_event['summary']
@@ -423,7 +423,7 @@ def update_event(request,event_id):
         print(event)
         event.save()
         return redirect('/userprofile/view_event/'+str(event.id))
-    return render(request, 'update_event.html', {"event": event,'user':request.user})
+    return render(request, 'update_event.html', {"event": event,'user':request.user,"warning": 'Event pdated Successfully'})
 
 def view_calendar(request):
     if not request.user.is_authenticated:

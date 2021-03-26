@@ -136,7 +136,7 @@
     </div> -->
 
     <!-- Login Form -->
-    {% if error_message %}
+    {% comment %} {% if error_message %}
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Error!</strong>           {{ error_message }}        
 
@@ -145,7 +145,7 @@
            </button>
           </div>
           
-        {% endif %}    
+        {% endif %}     {% endcomment %}
     
     <form action="{% url 'userauth:register' %}" method="POST">
     {% csrf_token %}

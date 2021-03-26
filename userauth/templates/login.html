@@ -28,7 +28,7 @@
     <!-- <div class="fadeIn first">
       <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
     </div> -->
- {% if error_message %}
+ {% comment %} {% if error_message %}
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Error!</strong>           {{ error_message }}        
 
@@ -37,7 +37,7 @@
            </button>
           </div>
           
-        {% endif %}    
+        {% endif %}     {% endcomment %}
 
     <!-- Login Form -->
     <form action="{% url 'userauth:login'%}" method="POST">
