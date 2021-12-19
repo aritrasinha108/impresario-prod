@@ -5,7 +5,9 @@
 - [PostgreSQL](https://www.postgresql.org/download/)
 
 ## Instructions
-- Clone the repo to you local system ```git clone <URL>```
+- Fork the repo 
+- Clone the forked repo to you local system ```git clone <URL>```
+- Add the link of the original repo as upstream. ```git remote add upstream <URL>```
 - Create a virtual environment ```python3 -m venv <Name of your choice>```
 - Activate the environment ```source <Name of your environment you gave in previous step>/bin/activate```
 - Switch to the branch ```dev``` using ```git checkout -b dev```
@@ -18,4 +20,4 @@
 # For Mentees in NITK Winter of code.
 - Create a branch from ```dev``` with ```<frontend/backend>-<your name>```. The command is  ```git checkout -b <name of your branch> dev```.
 - Make your changes in this branch and push them.
-- Create a PR to merge it with dev and request a review to all the mentors.
+- Create a PR to merge it with main and request a review to all the mentors.
