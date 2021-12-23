@@ -182,7 +182,7 @@ class Event(models.Model):
         (Cancelled,"cancelled"),
         (Confirmed,"Confirmed")
     )
-    status = models.IntegerField(choices= STATUS, blank=False,max_length=500)
+    status = models.IntegerField(choices= STATUS, blank=False)
     organization = models.ForeignKey(Organization,on_delete=models.CASCADE,related_name='event')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
