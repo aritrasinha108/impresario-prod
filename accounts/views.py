@@ -1,22 +1,21 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
-from userauth.models import Profile
+from .models import Profile,Account
 
 
-# Google OAuth 2.0
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from rest_auth.registration.views import SocialLoginView
+# from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+# from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+# from rest_auth.registration.views import SocialLoginView
 
-class GoogleLogin(SocialLoginView):
-    class GoogleAdapter(GoogleOAuth2Adapter):
-        access_token_url = "https://oauth2.googleapis.com/token"
-        authorize_url = "https://accounts.google.com/o/oauth2/v2/auth"
-        profile_url = "https://www.googleapis.com/oauth2/v2/userinfo"
-    adapter_class = GoogleAdapter
-    callback_url = "http://localhost:8000/accounts/register"
-    client_class = OAuth2Client
+# class GoogleLogin(SocialLoginView):
+#     class GoogleAdapter(GoogleOAuth2Adapter):
+#         access_token_url = "https://oauth2.googleapis.com/token"
+#         authorize_url = "https://accounts.google.com/o/oauth2/v2/auth"
+#         profile_url = "https://www.googleapis.com/oauth2/v2/userinfo"
+#     adapter_class = GoogleAdapter
+#     callback_url = "http://localhost:8000/accounts/register"
+#     client_class = OAuth2Client
 
 
 def logout_user(request):
@@ -25,8 +24,43 @@ def logout_user(request):
     return redirect('home')
 
 
-def register_user(request):
+def register_oauth_user(request):
     if request.method == 'POST':
+        email = request.user.email
+        user = User.objects.get(email=email)
+        try:
+            user.username = request.POST['username']
+            user.save()
+
+            profile = Profile(
+                first_name=request.user.first_name,
+                last_name=request.user.last_name,
+                phone_number=request.POST['phone'],
+                gender=request.POST['gender'],
+                user=user
+            )
+            profile.save()
+
+            account = Account(
+                profile=profile,
+                user=user
+            )                 
+            account.save()
+                
+            return redirect('home')
+        except:
+            return render(request,'register.html',{'warning':"This username has already been taken!!"})
+    return render(request,'register.html',{})
+
+def register_user(request):
+    if request.user.is_authenticated:
+        try:
+            profile = Profile.objects.get(user=request.user.id)
+            return redirect('home')
+        except:
+            print("User does not have a profile")
+            return register_oauth_user(request)
+    elif request.method == 'POST':
         try:
             User.objects.get(username=request.POST['username'])
             return render(request,'register.html',{'warning':"User already exists!!"})
@@ -37,20 +71,23 @@ def register_user(request):
                     request.POST['email'].lower(),
                     request.POST['password']
                 )
-                # user.last_name=request.POST['lname']
-                # user.first_name=request.POST['fname']
                 user.save()
                 
+                print(request.POST['gender'])
                 profile = Profile(
                     first_name=request.POST['fname'],
                     last_name=request.POST['lname'],
                     phone_number=request.POST['phone'],
-                    gender=request.POST['gender']
+                    gender=request.POST['gender'],
+                    user=user
                 )
                 profile.save()
-                
-                # account = Account(profile=profile,user=user)                 
-                # account.save()
+
+                account = Account(
+                    profile=profile,
+                    user=user
+                )                 
+                account.save()
                 
                 return redirect('accounts:login')
             else:
@@ -62,7 +99,7 @@ def login_user(request):
         user = authenticate(request,username=request.POST['username'],password=request.POST['password'])
         if user is not None:
             login(request,user)
-            return redirect('/userauth')
+            return redirect('home')
         else:
             return render(request,'login.html',{'warning':"Incorrect username or password"})
     return render(request,'login.html',{})

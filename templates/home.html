@@ -4,11 +4,11 @@
 {% endblock %}
 
 {% block active %}
-      <li class="active"><a href="{% url 'userauth:home' %}">HOME</a></li>
+      <li class="active"><a href="{% url 'home' %}">HOME</a></li>
       <li><a href="/scheduling">EXISTING TEAMS</a></li>  
-      <li><a href="{% url 'new_team' %}">CREATE TEAM</a></li>
+      <li><a href="{% url 'userprofile:new_team' %}">CREATE TEAM</a></li>
       {% comment %} <li><a href="#">TEAM REQUESTS</a></li> {% endcomment %}
-      <li><a href="{% url 'view_calendar' %}">CALENDAR</a></li>
+      <li><a href="{% url 'userprofile:view_calendar' %}">CALENDAR</a></li>
 {% endblock %}
 
 {% load static %}
@@ -34,7 +34,7 @@
             <br><br>
             <a class="btn btn-info" href="/scheduling" style="color:#0a2b24; font-size:2.0rem; position: absolute; left: 50%; transform: translate(-50%, -50%);">See all Organisations</a>
             <br><br><br>
-            <a class="btn btn-info" href="{% url 'new_team' %}" style="color:#0a2b24; font-size:2.0rem; position: absolute; left: 50%; transform: translate(-50%, -50%);">Create your own organisation</a>
+            <a class="btn btn-info" href="{% url 'userprofile:new_team' %}" style="color:#0a2b24; font-size:2.0rem; position: absolute; left: 50%; transform: translate(-50%, -50%);">Create your own organisation</a>
             <br>
             {% comment %} 
                   <h3>

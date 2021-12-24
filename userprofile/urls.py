@@ -2,6 +2,10 @@ from django.urls import path
 from django.conf.urls import url
 from . import views
 
+
+app_name = 'userprofile'
+
+
 urlpatterns = [
     # path('',views.index,name="index"),
     path('userprofile/create_new_team/',views.create_new_team, name="new_team"),
