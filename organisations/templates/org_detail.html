@@ -14,7 +14,7 @@
         <h3 style="color:#0d725e; font-size:2.0em;">Sub-Organisations:</h3>
             {% for child in child_org %}
                 {% if child is not none %}
-                    <a style="color:rgb(41, 175, 146); margin:5px; font-size: 1.75rem;" href="{% url 'organisations:detail' child.id %}">
+                    <a style="color:rgb(41, 175, 146); margin:5px; font-size: 1.75rem;" href="{% url 'organisations:org_detail' child.id %}">
                         {{child.name}}
                     </a>
                     <br>
@@ -42,16 +42,16 @@
             <br>
             <ul class="dropdown-menu " style = "font-size: 1.75rem; padding: 10px;">
                 <li><a href = "/userprofile/{{ org.id }}/add_event">Add event </a></li>
-                <li><a href="{% url 'userprofile:create_team' par_id %}">Create team</a></li>
+                <li><a href="{% url 'organisations:new_team' par_id %}">Create team</a></li>
                 {% ifequal role 1 %}
-                    <li><a href="{% url 'userprofile:team_request' par_id %}">Team requests</a></li> 
+                    <li><a href="{% url 'organisations:team_requests' par_id %}">Team requests</a></li> 
                 {% endifequal %}   
                 {% ifequal role 1 %}
-                    <li><a href="{% url 'userprofile:change_role' par_id %}">Change role</a></li>
-                    <li><a href="{% url 'userprofile:dismiss_admin' par_id %}">Change role to participant</a></li>
-                    <li><a href="{% url 'userprofile:edit_team' par_id %}">Edit team</a></li>
+                    <li><a href="{% url 'organisations:change_role' par_id %}">Change role</a></li>
+                    <li><a href="{% url 'organisations:dismiss_admin' par_id %}">Change role to participant</a></li>
+                    <li><a href="{% url 'organisations:edit_team' par_id %}">Edit team</a></li>
                 {% endifequal %}
-                <li><a onclick="return confirm('Are you sure to leave the team?')" href="{% url 'userprofile:leave_team' par_id %}" target="_self">Leave team</a></li>
+                <li><a onclick="return confirm('Are you sure to leave the team?')" href="{% url 'organisations:leave_team' par_id %}" target="_self">Leave team</a></li>
             </ul>
         </div>
     </div>

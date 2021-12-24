@@ -9,6 +9,5 @@ urlpatterns = [
     path('accounts/auth/', include('allauth.urls')),
     path('', views.index, name='home'),
     path('orgs/', include('organisations.urls')),
-    # path('scheduling/', include('scheduling.urls')),
     path('userprofile/', include('userprofile.urls')),
 ]

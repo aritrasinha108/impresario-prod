@@ -38,7 +38,7 @@ class Organization(models.Model):
         org.delete()
     
     @classmethod
-    def update_org(self, old_team_name, team_name, description, par_id):
+    def update_team(self, old_team_name, team_name, description, par_id):
         if par_id is not None:
             p = self.objects.get(parent_org=par_id, name=old_team_name)
         else:
@@ -133,5 +133,61 @@ class MembershipLevel(models.Model):
                     m = self.objects.create(user=member,organization_id=org,hierarchy=1,role=2)
 
 
+class TeamRequest(models.Model):
+    REJECTED = 0
+    APPROVED = 1
+    PENDING = 2
+    STATUS = (
+        (REJECTED, 'Rejected'),
+        (APPROVED, 'Approved'),
+        (PENDING, 'Pending')
+    )
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    team_name = models.CharField(blank=False, max_length=100)
+    team_description = models.CharField(blank=False, max_length=500)
+    team_members = models.ManyToManyField(User, blank=True)
+    par_org = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=STATUS, default=PENDING)
+    
+    def __str__(self):
+        par = self.par_org
+        team_name = ""
+        while par :
+            team_name = par.name + '/' + team_name
+            par = par.parent_org
+        return team_name + self.team_name
+    
+    @classmethod
+    def create_team_req(self, user, team_name, description, par_id, members):
+        tr = self.objects.create(
+            sender=user,
+            team_name=team_name,
+            team_description=description,
+            par_org_id=par_id
+        )
+        tr.team_members.set(members)
+        tr.save()
 
 
+class Event(models.Model):
+    event_id = models.TextField(blank=False)
+    title = models.CharField(blank=False, max_length=100)
+    description = models.CharField(blank=False, max_length=500)
+    location = models.CharField(max_length=100)
+    
+    Tentative=0
+    Cancelled=1
+    Confirmed=2
+    STATUS=(
+        (Tentative, "Tentative"),
+        (Cancelled, "Cancelled"),
+        (Confirmed, "Confirmed")
+    )
+
+    status = models.IntegerField(choices=STATUS, blank=False)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='event')
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.title

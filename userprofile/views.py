@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
-from scheduling.models import Organization,User,Membershiplevel,Teamrequest, Event
+from organisations.models import Organization,User,MembershipLevel,TeamRequest, Event
 from accounts.models import Account
 from gsetup import service, google_create_event, google_update_event  
 import datetime
@@ -11,94 +11,94 @@ import pytz
 
 utc=pytz.UTC
 
-# function used for retrieving ids of child organisations
-def retrieve_child_org(parent,child):
-    count = Organization.objects.filter(parent_org = parent).count()
-    if count!=0:
-        child_org = Organization.objects.filter(parent_org = parent)
-        for i in child_org:
-            retrieve_child_org(i.id,child)
-            child.append(i.id)
+# # function used for retrieving ids of child organisations
+# def retrieve_child_org(parent,child):
+#     count = Organization.objects.filter(parent_org = parent).count()
+#     if count!=0:
+#         child_org = Organization.objects.filter(parent_org = parent)
+#         for i in child_org:
+#             retrieve_child_org(i.id,child)
+#             child.append(i.id)
 
 ###################################################################################################################################################
 
-def create_team(request,par_id) :
+# def create_team(request,par_id) :
 
-    if request.user.is_authenticated:
-        warning = ''
-        if request.method == 'POST':
-            team_name = request.POST['team_name']
-            members = request.POST.getlist('checks')
-            print(members)
-            user=request.user
-            description = request.POST['description']
-            if Organization.objects.filter(name = team_name,parent_org__id = par_id).exists():
-                warning = "team with that name already exists"
-            elif Membershiplevel.objects.get(user_id = request.user.id,organization_id = par_id).role == 1 : #If user is an admin
-                org = Organization.objects.create(name = team_name,parent_org_id = par_id,description = description)
-                members = User.objects.filter(pk__in = members)
-                #Membershiplevel.create_team(members,org,par_id)
-                Membershiplevel.create_team(members,org,par_id,request.user.id)
-                warning = "team created"
-            else :
-                Teamrequest.create_team_req(user,team_name,description,par_id,members) #If user is a participant
-                warning = "team request sent to admin"
-        memberships = Membershiplevel.objects.filter(organization__id = par_id)
-        return render(request,'create_team.html',{'memberships':memberships,'warning':warning,'user':request.user},)
-    else:
-        return redirect('/userauth/login')
+#     if request.user.is_authenticated:
+#         warning = ''
+#         if request.method == 'POST':
+#             team_name = request.POST['team_name']
+#             members = request.POST.getlist('checks')
+#             print(members)
+#             user=request.user
+#             description = request.POST['description']
+#             if Organization.objects.filter(name = team_name,parent_org__id = par_id).exists():
+#                 warning = "team with that name already exists"
+#             elif MembershipLevel.objects.get(user_id = request.user.id,organization_id = par_id).role == 1 : #If user is an admin
+#                 org = Organization.objects.create(name = team_name,parent_org_id = par_id,description = description)
+#                 members = User.objects.filter(pk__in = members)
+#                 #Membershiplevel.create_team(members,org,par_id)
+#                 MembershipLevel.create_team(members,org,par_id,request.user.id)
+#                 warning = "team created"
+#             else :
+#                 TeamRequest.create_team_req(user,team_name,description,par_id,members) #If user is a participant
+#                 warning = "team request sent to admin"
+#         memberships = MembershipLevel.objects.filter(organization__id = par_id)
+#         return render(request,'create_team.html',{'memberships':memberships,'warning':warning,'user':request.user},)
+#     else:
+#         return redirect('/userauth/login')
 
-def create_new_team(request):
+# def create_new_team(request):
 
-    if request.user.is_authenticated:
-        warning = ''
-        if request.method == 'POST':
-            team_name = request.POST['team_name']
-            members = request.POST.getlist('checks')
-            user=request.user
-            description = request.POST['description']
-            print(members)
-            if Organization.objects.filter(name = team_name,parent_org__id = None).exists():
-                warning = "team with that name already exists"
-            else:
-                org = Organization.objects.create(name = team_name,parent_org_id = None)
-                members = User.objects.filter(pk__in = members)
-                Membershiplevel.create_team(members,org,None,request.user.id)
-                warning = "team created"
-        memberships = Account.objects.all()
-        return render(request,'create_team.html',{'memberships':memberships,'warning':warning,'user':request.user},)
-    else:
-        return redirect('/userauth/login')
+#     if request.user.is_authenticated:
+#         warning = ''
+#         if request.method == 'POST':
+#             team_name = request.POST['team_name']
+#             members = request.POST.getlist('checks')
+#             user=request.user
+#             description = request.POST['description']
+#             print(members)
+#             if Organization.objects.filter(name = team_name,parent_org__id = None).exists():
+#                 warning = "team with that name already exists"
+#             else:
+#                 org = Organization.objects.create(name = team_name,parent_org_id = None)
+#                 members = User.objects.filter(pk__in = members)
+#                 MembershipLevel.create_team(members,org,None,request.user.id)
+#                 warning = "team created"
+#         memberships = Account.objects.all()
+#         return render(request,'create_team.html',{'memberships':memberships,'warning':warning,'user':request.user},)
+#     else:
+#         return redirect('/userauth/login')
 
 
-def team_request(request, par_id) :
-    if request.user.is_authenticated:
-        user = request.user
-        top_org = Organization.get_top_org(par_id)
-        print("top_org:",top_org)
-        all_sub_org = Organization.get_all_children(top_org)
-        print("sub orgs:",all_sub_org)
-        sub_org = Membershiplevel.get_subgroups(all_sub_org, user)
-        print("sunGroups:",sub_org)
-        tr_request = Teamrequest.objects.filter(par_org__in = sub_org, status = 2) 
-        print("team request:",tr_request)
-        print(tr_request) 
-        return render(request,'team_request.html',{'team_request':tr_request,'user':request.user })
-    else:
-        return redirect('/userauth/login')
+# def team_request(request, par_id) :
+#     if request.user.is_authenticated:
+#         user = request.user
+#         top_org = Organization.get_top_org(par_id)
+#         print("top_org:",top_org)
+#         all_sub_org = Organization.get_all_children(top_org)
+#         print("sub orgs:",all_sub_org)
+#         sub_org = MembershipLevel.get_subgroups(all_sub_org, user)
+#         print("sunGroups:",sub_org)
+#         tr_request = TeamRequest.objects.filter(par_org__in = sub_org, status = 2) 
+#         print("team request:",tr_request)
+#         print(tr_request) 
+#         return render(request,'team_request.html',{'team_request':tr_request,'user':request.user })
+#     else:
+#         return redirect('/userauth/login')
 
 def change_role(request,org_id):
     if request.user.is_authenticated:
         warning = ''
-        role = Membershiplevel.objects.get(organization__id = org_id , user_id = request.user.id).role
+        role = MembershipLevel.objects.get(organization__id = org_id , user_id = request.user.id).role
         if request.method == 'POST':
             print("inside the change_role fun")
             members = request.POST.getlist('checks')
             print(members)
             members = User.objects.filter(pk__in = members)
-            Membershiplevel.change_role(members,org_id)
+            MembershipLevel.change_role(members,org_id)
             warning = "role changed to admin"
-        memberships = Membershiplevel.objects.filter(organization__id = org_id, role = 2)
+        memberships = MembershipLevel.objects.filter(organization__id = org_id, role = 2)
         return render(request,'change_role_toadmin.html',{'memberships':memberships,'warning':warning,'user':request.user},)
     else:
         return redirect('/userauth/login')
@@ -106,7 +106,7 @@ def change_role(request,org_id):
 def dismiss_admin(request,org_id):
     if request.user.is_authenticated:
         warning = ''
-        admin = Membershiplevel.objects.filter(organization__id = org_id,role = 1).count()
+        admin = MembershipLevel.objects.filter(organization__id = org_id,role = 1).count()
         if request.method == 'POST':
             print("inside")
             members = request.POST.getlist('checks')
@@ -118,10 +118,10 @@ def dismiss_admin(request,org_id):
                 warning = "can't turn into participant"
             else:
                 members = User.objects.filter(pk__in = members)
-                Membershiplevel.change_role_participant(members,org_id)
+                MembershipLevel.change_role_participant(members,org_id)
                 warning = "role changed to participant"
 
-        memberships = Membershiplevel.objects.filter(organization__id = org_id, role = 1)
+        memberships = MembershipLevel.objects.filter(organization__id = org_id, role = 1)
         return render(request,'participant.html',{'memberships':memberships,'warning':warning,'user':request.user},)
     else:
         return redirect('/userauth/login')
@@ -133,7 +133,7 @@ def leave_team(request,org_id):
         par_id = Organization.objects.get(pk=org_id).parent_org_id
         name = Organization.objects.get(pk=org_id).name
         while par_id is not None:
-            role = Membershiplevel.objects.get(user_id = request.user.id, organization__id = par_id).role
+            role = MembershipLevel.objects.get(user_id = request.user.id, organization__id = par_id).role
             if role == 1:
                 flag = True
                 break
@@ -148,35 +148,35 @@ def leave_team(request,org_id):
 
             for org in child:
                 # checking whether the user is a part of the organization
-                if Membershiplevel.objects.filter(organization__id=org,user_id=request.user.id).exists():
+                if MembershipLevel.objects.filter(organization__id=org,user_id=request.user.id).exists():
 
-                    role = Membershiplevel.objects.get(organization__id = org , user_id = request.user.id).role
+                    role = MembershipLevel.objects.get(organization__id = org , user_id = request.user.id).role
                     p = User.objects.get(pk = request.user.id)
-                    total_members = Membershiplevel.objects.filter(organization__id = org).count()
+                    total_members = MembershipLevel.objects.filter(organization__id = org).count()
                     if total_members>1:
                         # if the person is admin
                         if role == 1:
-                            admin = Membershiplevel.objects.filter(organization__id = org,role = 1).count()
+                            admin = MembershipLevel.objects.filter(organization__id = org,role = 1).count()
                             # if count of admin >1 then he will easily leave the team
                             if admin>1:
-                                Membershiplevel.leave_team(p,org)
+                                MembershipLevel.leave_team(p,org)
                                 warning = "Left the team"
                             else:  # if count of admin is one then before leaving some random person should be made as admin
-                                members = Membershiplevel.objects.filter(organization__id = org)
+                                members = MembershipLevel.objects.filter(organization__id = org)
                                 # accessing the member of team which was first added to team. 
-                                user = Membershiplevel.random_fun(members,org,request.user.id)
+                                user = MembershipLevel.random_fun(members,org,request.user.id)
                                 q = User.objects.filter(pk=user)
                                 # making random person admin
-                                Membershiplevel.change_role(q,org)
+                                MembershipLevel.change_role(q,org)
                                 # admin leaving the team
-                                Membershiplevel.leave_team(p,org)
+                                MembershipLevel.leave_team(p,org)
                                 warning = "Left the team"
                         else:
                             # if the person is participant
-                            Membershiplevel.leave_team(p,org)
+                            MembershipLevel.leave_team(p,org)
                             warning = "Left the team"
                     else: 
-                        Membershiplevel.leave_team(p,org)
+                        MembershipLevel.leave_team(p,org)
                         Organization.delete_org(org)
                         warning = "Left the team"
         return render(request,'leave_team.html',{'warning':warning,'user':request.user,'name':name},)
@@ -188,7 +188,7 @@ def remove_team(memberId,org_id):
     flag = False
     par_id = Organization.objects.get(pk=org_id).parent_org_id
     while par_id is not None:
-        role = Membershiplevel.objects.get(user_id = memberId, organization__id = par_id).role
+        role = MembershipLevel.objects.get(user_id = memberId, organization__id = par_id).role
         if role == 1:
             flag = True
             break
@@ -201,32 +201,32 @@ def remove_team(memberId,org_id):
 
         for org in child:
             # checking whether the user is a part of the organization
-            if Membershiplevel.objects.filter(organization__id=org,user_id=memberId).exists():
+            if MembershipLevel.objects.filter(organization__id=org,user_id=memberId).exists():
 
-                role = Membershiplevel.objects.get(organization__id = org , user_id = memberId).role
+                role = MembershipLevel.objects.get(organization__id = org , user_id = memberId).role
                 p = User.objects.get(pk = memberId)
-                total_members = Membershiplevel.objects.filter(organization__id = org).count()
+                total_members = MembershipLevel.objects.filter(organization__id = org).count()
                 if total_members>1:
                     # if the person is admin
                     if role == 1:
-                        admin = Membershiplevel.objects.filter(organization__id = org,role = 1).count()
+                        admin = MembershipLevel.objects.filter(organization__id = org,role = 1).count()
                         # if count of admin >1 then he will easily leave the team
                         if admin>1:
-                            Membershiplevel.leave_team(p,org)
+                            MembershipLevel.leave_team(p,org)
                         else:  # if count of admin is one then before leaving some random person should be made as admin
-                            members = Membershiplevel.objects.filter(organization__id = org)
+                            members = MembershipLevel.objects.filter(organization__id = org)
                             # accessing the member of team which was first added to team. 
-                            user = Membershiplevel.random_fun(members,org,memberId)
+                            user = MembershipLevel.random_fun(members,org,memberId)
                             q = User.objects.filter(pk=user)
                             # making random person admin
-                            Membershiplevel.change_role(q,org)
+                            MembershipLevel.change_role(q,org)
                             # admin leaving the team
-                            Membershiplevel.leave_team(p,org)
+                            MembershipLevel.leave_team(p,org)
                     else:
                         # if the person is participant
-                        Membershiplevel.leave_team(p,org)
+                        MembershipLevel.leave_team(p,org)
                 else: 
-                    Membershiplevel.leave_team(p,org)
+                    MembershipLevel.leave_team(p,org)
                     Organization.delete_org(org)
 #######################################################################################################################
 
@@ -244,7 +244,7 @@ def edit_team(request, org_id) :
             old_team_name = Organization.objects.get(pk=org_id).name
             par_id = Organization.objects.get(pk = org_id).parent_org_id
             Organization.update_team(old_team_name,team_name,description,par_id)
-            ex_members = Membershiplevel.objects.filter(organization__id = org_id)
+            ex_members = MembershipLevel.objects.filter(organization__id = org_id)
             ids = []
             for i in ex_members:
                 ids.append(i.user_id)
@@ -257,13 +257,13 @@ def edit_team(request, org_id) :
             user = request.user
             org  = Organization.objects.get(pk = org_id)
             
-            Membershiplevel.edit_team(ex_members,new_members,org_id,par_id,request.user.id)
+            MembershipLevel.edit_team(ex_members,new_members,org_id,par_id,request.user.id)
             warning = "successfully edited"
         par_id = Organization.objects.get(pk = org_id).parent_org_id
         if par_id is None:
             memberships = Account.objects.all()
         else:
-            memberships = Membershiplevel.objects.filter(organization__id=par_id)
+            memberships = MembershipLevel.objects.filter(organization__id=par_id)
         organisation  = Organization.objects.get(pk = org_id)    
         return render(request, 'edit_team.html',{'memberships': memberships,'org': organisation, 'warning':warning, 'user': request.user},)
     else:
@@ -276,7 +276,7 @@ def ajax_change_status(request):
         print("request_status:",request_status)
         request_id = request.GET.get('request_id', False)
         print("request_id:",request_id)
-        team_request = Teamrequest.objects.get(pk=request_id)
+        team_request = TeamRequest.objects.get(pk=request_id)
         print("team_request:",team_request)
         print("requestStatus:",team_request.status)
         print("Name:",team_request.team_name)
@@ -294,7 +294,7 @@ def ajax_change_status(request):
                 print("entered")
                 org = Organization.objects.create(name = team_request.team_name,parent_org_id = team_request.par_org.id)
                 print("org:",org)
-                Membershiplevel.create_team(team_request.team_members.all(),org,team_request.par_org,team_request.sender.id)
+                MembershipLevel.create_team(team_request.team_members.all(),org,team_request.par_org,team_request.sender.id)
                 team_request.status=1
                 team_request.save()
                 return JsonResponse({"success": True,"status":"approved"})
@@ -317,7 +317,7 @@ def show_team(request, team_id):
         if not org:
             return  redirect('/userauth/home')
         children = Organization.get_all_children(org)
-        members = Membershiplevel.objects.filter(organization__id = org.id)
+        members = MembershipLevel.objects.filter(organization__id = org.id)
         print(org.event.all())
         return render(request, 'show_team.html',{"org": org, "children": children, "members": members,'user':request.user})
     else:
@@ -349,11 +349,11 @@ def add_event(request, org_id):
                 if is_time_between(start,end, e.start_time) or is_time_between(start,end, e.end_time) or is_time_between(e.start_time,e.end_time, end) or is_time_between(e.start_time,e.end_time, start):
                     clash_events.append(e)
 
-            members = Membershiplevel.objects.filter(organization = org).values('user')
+            members = MembershipLevel.objects.filter(organization = org).values('user')
     
             for c in clash_events:
                 org2  = c.organization
-                mem2 = Membershiplevel.objects.filter(organization = org2).values('user')
+                mem2 = MembershipLevel.objects.filter(organization = org2).values('user')
                 for m in mem2:
                     if m in members:
                         return render(request,'add_event.html',{"warning": "Clashes!!!!","org":org})
@@ -383,7 +383,7 @@ def view_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     if not event:   
         return redirect('userprofile/view_team/1')
-    members = Membershiplevel.objects.filter(organization = event.organization.id).values('user')
+    members = MembershipLevel.objects.filter(organization = event.organization.id).values('user')
     attendees = User.objects.filter(pk__in = members)
     return render(request,'show_event.html', {'event': event , 'attendees': attendees,'user':request.user})
 

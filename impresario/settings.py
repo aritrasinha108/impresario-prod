@@ -47,9 +47,6 @@ INSTALLED_APPS = [
     # My apps
     'accounts',
     'organisations',
-    'userauth.apps.UserauthConfig',
-    'scheduling.apps.SchedulingConfig',
-    'userprofile.apps.UserprofileConfig',
     # django-allauth
     'allauth',
     'allauth.account',
