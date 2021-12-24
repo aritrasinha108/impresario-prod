@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from scheduling.models import Organization,User,Membershiplevel,Teamrequest, Event
-from userauth.models import Account
+from accounts.models import Account
 from gsetup import service, google_create_event, google_update_event  
 import datetime
 from .utils import is_time_between

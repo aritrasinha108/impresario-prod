@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'userauth.apps.UserauthConfig',
     'scheduling.apps.SchedulingConfig',
     'userprofile.apps.UserprofileConfig',
-    'accounts',
+    'accounts.apps.AccountsConfig',
     'django.contrib.sites',
     # django-allauth
     'allauth',
@@ -55,12 +55,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     # rest-auth
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_auth',
+    # 'rest_framework',
+    # 'rest_framework.authtoken',
+    # 'rest_auth',
 ]
 
-SITE_ID = 2
+SITE_ID = 3
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -176,5 +176,5 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-LOGIN_REDIRECT_URL = 'http://localhost:8000/'
+LOGIN_REDIRECT_URL = 'http://localhost:8000/accounts/register'
 LOGOUT_REDIRECT_URL = '/'
