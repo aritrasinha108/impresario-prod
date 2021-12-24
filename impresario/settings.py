@@ -44,16 +44,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # My apps
+    'accounts',
+    'organisations',
     'userauth.apps.UserauthConfig',
     'scheduling.apps.SchedulingConfig',
     'userprofile.apps.UserprofileConfig',
-    'accounts.apps.AccountsConfig',
-    'django.contrib.sites',
     # django-allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django.contrib.sites',
     # rest-auth
     # 'rest_framework',
     # 'rest_framework.authtoken',

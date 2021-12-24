@@ -1,21 +1,17 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth import logout, authenticate, login
-from django.contrib.auth.models import User
-from .models import Profile,Account
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
+from django.contrib.auth.models import User, auth
+from .models import Profile, Account
+from django.contrib import messages
 
 
-# from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-# from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-# from rest_auth.registration.views import SocialLoginView
-
-# class GoogleLogin(SocialLoginView):
-#     class GoogleAdapter(GoogleOAuth2Adapter):
-#         access_token_url = "https://oauth2.googleapis.com/token"
-#         authorize_url = "https://accounts.google.com/o/oauth2/v2/auth"
-#         profile_url = "https://www.googleapis.com/oauth2/v2/userinfo"
-#     adapter_class = GoogleAdapter
-#     callback_url = "http://localhost:8000/accounts/register"
-#     client_class = OAuth2Client
+def settings_menu(request):
+    if request.user.is_authenticated:
+        return render(request, 'settings_menu.html', {
+            'user': request.user
+        })
+    else:
+        return redirect('accounts:login')
 
 
 def logout_user(request):
@@ -44,13 +40,16 @@ def register_oauth_user(request):
             account = Account(
                 profile=profile,
                 user=user
-            )                 
+            )
             account.save()
                 
             return redirect('home')
         except:
-            return render(request,'register.html',{'warning':"This username has already been taken!!"})
+            return render(request, 'register.html', {
+                'warning': "This username has already been taken"
+            })
     return render(request,'register.html',{})
+
 
 def register_user(request):
     if request.user.is_authenticated:
@@ -58,14 +57,15 @@ def register_user(request):
             profile = Profile.objects.get(user=request.user.id)
             return redirect('home')
         except:
-            print("User does not have a profile")
             return register_oauth_user(request)
     elif request.method == 'POST':
         try:
             User.objects.get(username=request.POST['username'])
-            return render(request,'register.html',{'warning':"User already exists!!"})
+            return render(request,'register.html', {
+                'warning': "This username has already been taken"
+            })
         except User.DoesNotExist:
-            if request.POST['password']==request.POST['password2']:
+            if request.POST['password'] == request.POST['password2']:
                 user=User.objects.create_user(
                     request.POST['username'],
                     request.POST['email'].lower(),
@@ -73,7 +73,6 @@ def register_user(request):
                 )
                 user.save()
                 
-                print(request.POST['gender'])
                 profile = Profile(
                     first_name=request.POST['fname'],
                     last_name=request.POST['lname'],
@@ -91,15 +90,50 @@ def register_user(request):
                 
                 return redirect('accounts:login')
             else:
-                return render(request,'register.html',{'warning':"Passwords do not match!!"})
-    return render(request,'register.html',{})
+                return render(request, 'register.html', {
+                    'warning': "The passwords do not match"
+                })
+    return render(request,'register.html', {})
+
 
 def login_user(request):
-    if request.method=='POST':
-        user = authenticate(request,username=request.POST['username'],password=request.POST['password'])
+    if request.method == 'POST':
+        user = authenticate(
+            request, 
+            username=request.POST['username'], 
+            password=request.POST['password']
+        )
         if user is not None:
-            login(request,user)
+            login(request, user)
             return redirect('home')
         else:
-            return render(request,'login.html',{'warning':"Incorrect username or password"})
-    return render(request,'login.html',{})
+            return render(request, 'login.html', {
+                'warning': "Incorrect username or password"
+            })
+    return render(request, 'login.html', {})
+
+
+def change_password(request):
+    if not request.user.is_authenticated:
+         return redirect('accounts:login')
+    if request.method == 'POST':
+        cur_pwd = request.POST['cur_password']
+        pwd = request.POST['password']
+        pwd2 = request.POST['password2']
+        username = request.user.get_username()
+        user = User.objects.get(username__exact=username)
+        check = auth.authenticate(request, username=username, password=cur_pwd)
+        if check is None:
+            messages.info(request, 'Current Password is not correct')
+            return redirect('accounts:change_password')
+        if pwd == pwd2:
+            user.set_password(pwd)
+            user.save()
+            update_session_auth_hash(request, user)
+            messages.info(request, 'Password changed successfully')
+            return redirect('accounts:change_password')
+        else:
+            messages.info(request, 'The Passwords do not match')
+            return redirect('accounts:change_password')
+    else:
+        return render(request,'change_pass.html')

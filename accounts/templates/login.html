@@ -1,6 +1,4 @@
-{% extends 'adminbase.html' %}
-
-{% load static %}
+{% extends 'layout.html' %}
 
 {% block title %}
   Login
@@ -10,13 +8,13 @@
   <li><a href="{% url 'home' %}">HOME</a></li>
   {% if user.is_authenticated %}
     <li class="active"><a href="/scheduling">EXISTING TEAMS</a></li>  
-    <li><a href="{% url 'new_team' %}">CREATE TEAM</a></li>
-    {% comment %} <li><a href="{% url 'team_request' par_id %}">TEAM REQUESTS</a></li> {% endcomment %}
-    <li><a href="{% url 'view_calendar' %}">CALENDAR</a></li>
+    <li><a href="{% url 'userprofile:new_team' %}">CREATE TEAM</a></li>
+    {% comment %} <li><a href="{% url 'userprofile:team_request' par_id %}">TEAM REQUESTS</a></li> {% endcomment %}
+    <li><a href="{% url 'userprofile:view_calendar' %}">CALENDAR</a></li>
   {% else %}
     <li><a href="{% url 'accounts:login' %}">Login</a></li>  
     <li><a href="{% url 'accounts:register' %}">Register</a></li>
-    {% comment %} <li><a href="{% url 'team_request' par_id %}">TEAM REQUESTS</a></li> {% endcomment %}
+    {% comment %} <li><a href="{% url 'userprofile:team_request' par_id %}">TEAM REQUESTS</a></li> {% endcomment %}
   {% endif%}
 {% endblock %}
 

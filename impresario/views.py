@@ -1,6 +1,5 @@
-from django.shortcuts import render,redirect
-from impresario import settings
-from accounts.models import Account,Profile
+from django.shortcuts import render, redirect
+from accounts.models import Account
 
 def index(request):
     if request.user.is_authenticated:
@@ -8,6 +7,8 @@ def index(request):
             account = Account.objects.get(user=request.user.id)
         except:
             return redirect('accounts:register')
-        return render(request,'home.html',{'account':account})
+        return render(request, 'home.html', {
+            'account': account
+        })
     else:
-        return render(request,'index.html',{})
+        return render(request, 'index.html', {})

@@ -7,8 +7,7 @@ app_name = 'userprofile'
 
 
 urlpatterns = [
-    # path('',views.index,name="index"),
-    path('userprofile/create_new_team/',views.create_new_team, name="new_team"),
+    # path('userprofile/create_new_team/',views.create_new_team, name="new_team"),
     path('create_team/<int:par_id>', views.create_team, name="create_team"),
     path('team_request/<int:par_id>', views.team_request, name="team_request"),
     url(r'^ajax/approve_or_reject/$', views.ajax_change_status, name='ajax_change_status'),

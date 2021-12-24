@@ -1,13 +1,14 @@
-from django.conf.urls import include
 from django.urls import path
-from .views import logout_user,register_user,login_user
+from . import views
 
 
 app_name = 'accounts'
 
 
 urlpatterns = [
-    path('logout/',logout_user,name='logout'),
-    path('register/',register_user,name='register'),
-    path('login/',login_user,name='login')
+    path('logout/', views.logout_user, name='logout'),
+    path('register/', views.register_user, name='register'),
+    path('login/', views.login_user, name='login'),
+    path('settings/', views.settings_menu, name='menu'),
+    path('change-password/', views.change_password, name='change_password')
 ]
