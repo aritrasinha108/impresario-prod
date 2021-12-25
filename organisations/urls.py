@@ -1,5 +1,5 @@
 from django.urls import path
-from django.conf.urls import url
+from django.conf.urls import include, url
 from . import views
 
 
@@ -17,4 +17,6 @@ urlpatterns = [
     path('<int:org_id>/change_role/', views.change_role, name='change_role'),
     path('<int:org_id>/dismiss_admin/', views.dismiss_admin, name='dismiss_admin'),
     path('<int:org_id>/leave/', views.leave_team, name='leave_team'),
+    path('', include('events.urls')),
+    
 ]

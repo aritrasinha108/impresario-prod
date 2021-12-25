@@ -11,7 +11,7 @@
   <li ><a href="{% url 'organisations:org_tree' %}">EXISTING TEAMS</a></li>
   <li class="active"><a href="{% url 'organisations:new_org' %}">CREATE TEAM</a></li>
   {% comment %} <li><a href="#">TEAM REQUESTS</a></li> {% endcomment %}
-  <li><a href="{% url 'userprofile:view_calendar' %}">CALENDAR</a></li>
+  <li><a href="{% url 'organisations:events:view_calendar' %}">CALENDAR</a></li>
 {% endblock %}
 
 {% block body %}
@@ -43,12 +43,12 @@
     var names = [];
     var admin = [];
     ("{% for membership in memberships %}");
-    ids.push("{{membership.user.id}}");
-    names.push("{{membership.user}}");
-    admin.push("{{membership.role}}");
+      ids.push("{{membership.user.id}}");
+      names.push("{{membership.user}}");
+      admin.push("{{membership.role}}");
+    ("{% endfor %}");
     console.log(ids);
     console.log(names);
-    ("{% endfor %}");
   </script>
   <script src="{% static 'js/create_team.js' %}"></script>
 {% endblock %}

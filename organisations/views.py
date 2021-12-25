@@ -26,6 +26,7 @@ def create_org(request):
                 warning = "Team created"
                 return redirect('home')
         memberships = Account.objects.all()
+        print(memberships)
         return render(request, 'create_team.html', {
             'memberships': memberships,
             'warning': warning,

@@ -32,7 +32,7 @@
         {% endfor %} 
         <h3 style="color:#0d725e; font-size:2.0em;">Upcoming Events: </h3>
         {% for e in org.event.all %}
-            <a style="color:rgb(37, 139, 121);  font-size:1.25em; " href = "/userprofile/view_event/{{ e.id }}">
+            <a style="color:rgb(37, 139, 121); font-size:1.25em;" href="{% url 'organisations:events:view_event' e.id %}">
                 {{ e.title}}
             </a>
         {% endfor %} 
@@ -41,7 +41,7 @@
             <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More<span class="caret"></span></button>
             <br>
             <ul class="dropdown-menu " style = "font-size: 1.75rem; padding: 10px;">
-                <li><a href = "/userprofile/{{ org.id }}/add_event">Add event </a></li>
+                <li><a href = "{% url 'organisations:events:add_event' org.id %}">Add event</a></li>
                 <li><a href="{% url 'organisations:new_team' par_id %}">Create team</a></li>
                 {% ifequal role 1 %}
                     <li><a href="{% url 'organisations:team_requests' par_id %}">Team requests</a></li> 

@@ -21,7 +21,7 @@
       {% endif %}    
       <h1 class="font-weight-bold text-center">Register</h1>
       <h3>Fill all the details to continue..</h3>
-      <form action="{% url 'userauth:register' %}" method="POST">
+      <form action="{% url 'accounts:register' %}" method="POST">
         {% csrf_token %}
         <div class="form-group">
           <label for="username">Username:</label>
@@ -94,14 +94,14 @@
 {% block active %} 
   <li><a href="{% url 'home' %}">HOME</a></li>
     {% if user.is_authenticated %}
-      <li class="active"><a href="/scheduling">EXISTING TEAMS</a></li>  
-      <li><a href="{% url 'userprofile:new_team' %}">CREATE TEAM</a></li>
+      <li class="active"><a href="{% url 'organisations:org_tree' %}">EXISTING TEAMS</a></li>  
+      <li><a href="{% url 'organisations:new_org' %}">CREATE TEAM</a></li>
       {% comment %} <li><a href="{% url 'userprofile:team_request' par_id %}">TEAM REQUESTS</a></li> {% endcomment %}
       <li><a href="{% url 'userprofile:view_calendar' %}">CALENDAR</a></li>
     {% else %}
-      <li><a href="/accounts/login">Login</a></li>  
-      <li><a href="/accounts/register">Register</a></li>
-      {% comment %} <li><a href="{% url 'userprofile:team_request' par_id %}">TEAM REQUESTS</a></li> {% endcomment %}
+      <li><a href="{% url 'accounts:login' %}">Login</a></li>  
+      <li><a href="{% url 'accounts:register' %}">Register</a></li>
+      {% comment %} <li><a href="{% url 'organisations:team_requests' par_id %}">TEAM REQUESTS</a></li> {% endcomment %}
     {% endif%}
 {% endblock %}
 

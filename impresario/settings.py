@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # My apps
     'accounts',
     'organisations',
+    'events',
     # django-allauth
     'allauth',
     'allauth.account',

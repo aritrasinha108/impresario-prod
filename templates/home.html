@@ -9,7 +9,7 @@
 	<li><a href="{% url 'organisations:org_tree' %}">EXISTING TEAMS</a></li>  
 	<li><a href="{% url 'organisations:new_org' %}">CREATE TEAM</a></li>
 	{% comment %} <li><a href="#">TEAM REQUESTS</a></li> {% endcomment %}
-	<li><a href="{% url 'userprofile:view_calendar' %}">CALENDAR</a></li>
+	<li><a href="{% url 'organisations:events:view_calendar' %}">CALENDAR</a></li>
 {% endblock %}
 
 {% block body %}
