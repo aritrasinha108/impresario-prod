@@ -10,6 +10,7 @@ env = environ.Env()
 environ.Env.read_env()
 
 OAUTH_CLIET_ID = env('OAUTH_CLIENT_ID')
+OAUTH_CLIENT_SECRET = env('OAUTH_CLIENT_SECRET')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -147,9 +148,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Heroku
@@ -169,6 +173,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': [
             'profile',
             'email',
+            'https://www.googleapis.com/auth/calendar'
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',

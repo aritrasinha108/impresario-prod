@@ -1,0 +1,56 @@
+{% extends 'layout.html' %} 
+
+{% block title %}
+   Impressario | My Calendar
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+{% load static %}
+
+{% block links %}
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/list/main.min.css' rel='stylesheet' />
+{% endblock %}
+
+{% block body %}
+    <!-- <script src="https://unpkg.com/fullcalendar@5.10.1/main.js" crossorigin="anonymous"></script>
+    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/list/main.min.js'></script>
+    <div id="calendar"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded',function () {
+            const calendarEl = document.getElementById('calendar');
+
+            var events = [];
+            console.log(events);
+            ("{% for event in events %}");
+                var e = {};
+                e['title'] = ("{{ event.summary }}");
+                e['start'] = ("{{ event.start.dateTime }}");
+                e['end'] = ("{{ event.end.dateTime }}");
+                console.log(e);
+                events.push(e);
+            ("{% endfor %}");
+            console.log(events);
+
+            const calendar = new FullCalendar.Calendar(
+                calendarEl, {
+                    // plugins: [ 'dayGrid', 'timeGrid' ],
+                    events: events
+                }
+            )
+            calendar.render();
+        });
+    </script> -->
+    <iframe src="https://calendar.google.com/calendar/embed?src={{ cal_url }}&ctz=Asia%2FKolkata" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+{% endblock %}
+
