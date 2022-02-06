@@ -1,0 +1,138 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'css/aut.css' %}" />
+        <title>Impresario | Auth</title>
+        <script src="{% static 'js/auth_switch.js' %}" type="module"></script>
+        <!-- <script>
+            function googleSignIn() {
+                let cookies = document.cookie.split(';');
+                let csrftoken = null
+                cookies.forEach((cookie) => {
+                    if(cookie.startsWith('csrftoken=')) {
+                        csrftoken = cookie.substring(10)
+                    }
+                })
+                fetch(
+                    "/accounts/auth/google/login/",
+                    {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": csrftoken,
+                            'Access-Control-Allow-Origin': '*',
+                        },
+                        credentials: 'same-origin'
+                    }
+                )
+            }
+        </script> -->
+    </head>
+
+    <body>
+        <div class="container {% if signup %} sign-up-mode {% endif %}">
+            <div class="forms-container">
+                <div class="signin-signup">
+                    <form action="{% url 'accounts:auth' %}" method="POST" class="sign-in-form">
+                        {% csrf_token %}
+                        <h2 class="title">Sign in</h2>
+                        {% if login and warning %}
+                            <p>{{ warning }}</p>
+                        {% endif %}
+                        <div class="input-field">
+                            <i class="fas fa-user" style="color: #20dbc2;"></i>
+                            <input required type="text" placeholder="Username" name="username" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-lock" style="color: #20dbc2;"></i>
+                            <input required type="password" placeholder="Password" name="password" />
+                        </div>
+                        <input hidden name="type" type="text" value="login" />
+                        <input class="btn solid" type="submit" value="Login" />
+                        <p class="social-text">Or Sign in with social platforms</p>
+                        <div class="social-media">
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="/accounts/auth/google/login/" class="social-icon social-active">
+                                <i class="fab fa-google"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </form>
+                    <form action="{% url 'accounts:auth' %}" method="POST" class="sign-up-form">
+                        {% csrf_token %}
+                        <h2 class="title">Sign up</h2>
+                        {% if signup and warning %}
+                            <p>{{ warning }}</p>
+                        {% endif %}
+                        <div class="input-field">
+                            <i class="fas fa-user" style="color: #20dbc2;"></i>
+                            <input type="text" placeholder="Username" name="username" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-user-secret" style="color: #20dbc2;"></i>
+                            <input type="text" placeholder="First name" name="fname" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-user-secret" style="color: #20dbc2;"></i>
+                            <input type="text" placeholder="Last Name" name="lname" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-envelope" style="color: #20dbc2;"></i>
+                            <input type="email" placeholder="Email" name="email" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-lock" style="color: #20dbc2;"></i>
+                            <input type="password" placeholder="Enter Password" name="password1" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-user-lock" style="color: #20dbc2;"></i>
+                            <input type="password" placeholder="Confirm Password" name="password2" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-phone" style="color: #20dbc2;"></i>
+                            <input type="text" placeholder="Phone" name="phone" />
+                        </div>
+                        <input hidden name="type" type="text" value="signup" />
+                        <input type="submit" class="btn" value="Sign up" />
+                    </form>
+                </div>
+            </div>
+
+            <div class="panels-container">
+                <div class="panel left-panel">
+                    <div class="content">
+                        <h1 class="intro">Welcome to Impresario!!</h1>
+                        <h3>New here ?</h3>
+                        <p>
+                            Connect with us to keep the track of your upcoming events and organisations in a integral way.
+                        </p>
+                        <button class="btn transparent" id="sign-up-btn">Sign up</button>
+                    </div>
+                    <img src="{% static 'assets/log.svg' %}" class="image" alt="" />
+                </div>
+                <div class="panel right-panel">
+                    <div class="content">
+                        <h1 class="intro">Welcome Back!</h1>
+                        <h3>One of us ?</h3>
+                        <p>
+                            Working with Impresario makes your task easier just like your handy application.
+                        </p>
+                        <button class="btn transparent" id="sign-in-btn">Sign in</button>
+                    </div>
+                    <img src="{% static 'assets/register.svg' %}" class="image" alt="" />
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -45,20 +45,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # My apps
     'accounts',
     'organisations',
     'events',
-    # django-allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'django.contrib.sites',
-    # rest-auth
-    # 'rest_framework',
-    # 'rest_framework.authtoken',
-    # 'rest_auth',
 ]
 
 SITE_ID = 3
