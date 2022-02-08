@@ -22,6 +22,6 @@
                 "</input>";   
             options.push(option);
     }
-    $("#team_members").append(options.join("<br>"));
+    document.querySelector("#team_members").innerHTML = options.join("<br>");
 }) ();
   

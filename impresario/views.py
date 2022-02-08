@@ -11,4 +11,7 @@ def index(request):
             'account': account
         })
     else:
-        return render(request, 'index.html', {})
+        return render(request, 'landing.html', {})
+
+def contact(request):
+    return render(request, 'contacts.html', {})

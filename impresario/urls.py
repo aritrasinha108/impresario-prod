@@ -9,4 +9,5 @@ urlpatterns = [
     path('accounts/auth/', include('allauth.urls')),
     path('', views.index, name='home'),
     path('orgs/', include('organisations.urls')),
+    path('contact-us/', views.contact, name='contacts')
 ]

@@ -1,0 +1,254 @@
+@media screen and (max-width:768px){
+    .logo{
+       margin-top: 10px;
+       position: relative;
+       right: 2rem;
+    }
+    .content{
+        overflow:hidden;
+    }
+    .textbox{
+      width: 20rem;
+      position: relative;
+      left:15%;
+      top: 5%;
+    }
+    .circle1{
+        opacity: 1;
+    }
+    h3{
+        font-size: 1.8rem;
+    }
+    h1{
+        font-size: 1.8rem;
+    }
+    .totle{
+        font-size: 3.1rem;
+    }
+    .textbox p{
+            font-size: 0.86rem;
+            font-weight: 580;
+            margin-top: 2%;
+            
+    }
+    .pad{
+        position: relative;
+        left: 20%;
+        background-color: #fffefefd;
+        color: rgb(0, 255, 255);
+    }
+    .imagebox{
+        opacity: 0;
+        padding-top: 100px;
+    }
+    .nav-links{
+        width: 100%;
+    }
+    .circle1{
+        clip-path: circle(600px at right 900px);
+    }
+    /* icons */
+    .icon1{
+       position: absolute;
+       color: #fff;
+        left: 40%;
+        top: 73%;
+        transform: translate(-40%,-73%);
+      }
+      .icon2{
+        position: absolute;
+        color: #fff;
+        left: 53%;
+        top: 73%;
+        transform: translate(-53%,-73%);
+      }
+        
+    
+    .icon3{
+        position: absolute;
+        color: #fff;
+        left: 64%;
+        top: 73%;
+        transform: translate(-64%,-73%);
+      }
+    .info{
+        position: relative;
+        left: -3rem;
+    }
+    .title{
+        position: relative;
+        left: 27%;
+    }
+     /* create team */
+    .one{
+        color: #1ad5bc;
+        font-weight: 700;
+    }
+    .notes{
+        position: absolute;
+        left: 63%;
+    }
+    .card{
+        position: relative;
+        left: 1%;
+        top: 2%;
+        
+    }
+    /* contact page */
+    .outer{
+      position: relative;
+      left: -2.5rem;
+        
+    }
+    .card-card{
+        width: 90%;
+        position: relative;
+        top: 50%;
+        height: 80vh;
+       
+    }
+    .info-area{
+        width: 50%;
+        opacity: 1;
+    }
+    .input-area{
+        width: 60%;
+        height: 80vh;
+         margin: 0;
+    }
+    .econ1{
+         margin-top: 1.5rem;
+    }
+    .econ p{
+        font-size: 0.75rem;
+        position: absolute;
+        left: 2rem;
+      
+        
+    }
+    .econ i{
+        font-size: 20px;
+        position: relative;
+       top: -1.7rem;
+        margin-right: 0;
+        padding-right: 0;
+    }
+    .contact {
+        position: relative;
+       
+    }
+    .dots{
+        position: relative;
+        left:-1rem;
+        top: -16rem;
+        margin: 1rem 0rem;
+        width: 10px;
+        height: 10px;
+    }
+   
+   
+}
+
+.invisible{
+    opacity: 0;
+}
+
+/* breakpoint:2 */
+
+@media screen and (max-width:1255px){
+    .nav-links{
+        width: 50%;
+    }
+    h3{
+        font-size: 2rem;
+    }
+    h1{
+        font-size: 2rem;
+    }
+    .totle{
+        font-size: 3.9rem;
+    }
+}
+@media screen and (max-width:1140px){
+    .nav-links{
+        width:55%;
+    }
+    h3{
+        font-size: 1.6rem;
+    }
+    h1{
+        font-size: 1.6rem;
+    }
+    .totle{
+        font-size: 3rem;
+    }
+}
+@media screen and (max-width:1045px){
+    .nav-links{
+        width:55%;
+    }
+    h3{
+        font-size: 1.2rem;
+    }
+    h1{
+        font-size: 1.2rem;
+    }
+    .totle{
+        font-size: 2.7rem;
+    }
+}
+@media screen and (max-width:1009px){
+
+h3{
+    font-size: 1.4rem;
+}
+h1{
+    font-size: 1.4rem;
+}
+    .totle{
+        font-size: 2.4rem;
+    }
+    .textbox{
+        width: 30rem;
+    }
+    svg{
+        position: relative;
+        left: 0%;
+        width: 90%;
+    }
+}
+
+
+@media screen and (max-width:921px){
+
+    h3{
+        font-size: 1.4rem;
+    }
+    h1{
+        font-size: 1.4rem;
+    }
+        .totle{
+            font-size: 2.4rem;
+        }
+        .textbox{
+            width: 35rem;
+        }
+        svg{
+            position: relative;
+            left: 10%;
+            top: 0%;
+            width: 100%;
+        }
+    }
+    
+@media screen and (max-width:869px){
+    
+      .nav-links{
+          width: 64%;
+      }
+      .nav-links a{
+          font-size: 15px;
+      }
+
+}
+

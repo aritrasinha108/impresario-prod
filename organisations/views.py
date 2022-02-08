@@ -12,8 +12,6 @@ def create_org(request):
         if request.method == 'POST':
             name = request.POST['name']
             members = request.POST.getlist('checks')
-            user = request.user
-            description = request.POST['description']
             if Organization.objects.filter(name=name,parent_org__id=None).exists():
                 warning = "Team with this name already exists"
             else:
@@ -26,7 +24,6 @@ def create_org(request):
                 warning = "Team created"
                 return redirect('home')
         memberships = Account.objects.all()
-        print(memberships)
         return render(request, 'create_team.html', {
             'memberships': memberships,
             'warning': warning,
@@ -40,7 +37,6 @@ def org_tree(request):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
     queryset_roles = MembershipLevel.objects.filter(user__username=request.user.username)
-    queryset = Organization.objects.all()
     mq = queryset_roles.aggregate(Max('organization__id'))
     if mq['organization__id__max'] is None:
         adj = [[] for i in range(len(queryset_roles) + 1)]
@@ -72,12 +68,6 @@ def org_tree(request):
     # Making listo
     listo = []
     make_listo(0, adj, name_dict, 0, listo)
-    # Printing adjacency oganisation tree of user's organisations
-    print("\nadjacency list:")
-    for i in range(len(adj)):
-        print("\n", i, ": ", end=" ")
-        for j in adj[i]:
-            print(j, end=" ")
     return render(request, 'org_tree.html', {
         'listo': listo,
         'user': request.user

@@ -3,41 +3,43 @@
 {% load static %}
 
 {% block title %}
-  Create Organisation 
+  Create Team
 {% endblock %}
 
-{% block active %}
-  <li><a href="{% url 'home' %}">HOME</a></li>
-  <li ><a href="{% url 'organisations:org_tree' %}">EXISTING TEAMS</a></li>
-  <li class="active"><a href="{% url 'organisations:new_org' %}">CREATE TEAM</a></li>
-  {% comment %} <li><a href="#">TEAM REQUESTS</a></li> {% endcomment %}
-  <li><a href="{% url 'organisations:events:view_calendar' %}">CALENDAR</a></li>
+{% block style %}
+  body {
+    overflow: hidden;
+  }
 {% endblock %}
 
 {% block body %}
-  <div class="wrapper fadeInDown">
-    <div id="formContent">
-      <h1> Create Team </h1>
-      <form method="post" >
-        {% csrf_token %}
-        <input type="text" id="name" name="name" class = "fadeIn second" placeholder="Org Name" required /><br />
-        <textarea
-          name="description"
-          id="description"
-          cols="30"
-          rows="5"
-          placeholder="Description"
-          class = "fadeIn second"
-        ></textarea>
-        <br/>
-        <label for="team_members">Members:</label><br />
-        <div id="team_members" multiple="true" name="checks"></div>
-        <br/>
-        <input type="submit" class = "fadeIn" value="Create organisation"><br />
-        {% comment %} {% if warning %} {{warning}} {% endif %} {% endcomment %}
-      </form>
+  <section>
+    <div class="containerall">
+      <div class="container">
+        <div class="card">
+          <div class="info">
+            <h1 class="title"><span class="head">CREATE TEAM</span></h1>
+            <div class="sizes">
+              <form method="post">
+                {% csrf_token %}
+                <div class="icon ico1">
+                  <i class="fas fa-users part1"></i>
+                  <input required type="text" name="name" placeholder="Team Name" class="name" />
+                </div>
+                <textarea name="description" rows="8" cols="40" placeholder="Type Something" class="area"></textarea>
+                <i class="far fa-comments fa-5x notes"></i>
+                <div class="icon ico2">
+                  <!-- <label for="team_members">Members:</label><br /> -->
+                  <div id="team_members" multiple="true" name="checks"></div>
+                </div>
+                <button type="submit" name="button" class="btn">C<span class="btn2">reate</span> T<span class="btn2">eam</span></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
   <script>
     var ids = [];
     var names = [];

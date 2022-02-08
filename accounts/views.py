@@ -5,12 +5,47 @@ from django.contrib.auth.models import User, auth
 from .models import Profile, Account
 from django.contrib import messages
 
-def auth(request):
+def register_user(request):
+    # return redirect('home')
+    if request.method == 'POST':
+        email = request.user.email
+
+        user = User.objects.get(email=email)
+        user.username = request.POST['username']
+        user.save()
+
+        profile = Profile(
+            first_name=request.user.first_name,
+            last_name=request.user.last_name,
+            phone_number=request.POST['phone'],
+            user=user
+        )
+        profile.save()
+
+        account = Account(
+            profile=profile,
+            user=user
+        )
+        account.save()
+
+        return redirect('home')
+    
+    if request.user.is_authenticated:
+        try:
+            profile = Profile.objects.get(user=request.user.id)
+            return redirect('home')
+        except:
+            return render(request, 'auth.html', {
+                'warning': '',
+                'login': False,
+                'signup': True,
+                'oauth': True
+            })
+
+def auth(request, l=True, s=False):
     if request.user.is_authenticated:
         return redirect('home')
     
-    l = True
-    s = False
     warning = False
 
     user = None
@@ -88,34 +123,13 @@ def logout_user(request):
 
 
 def register_oauth_user(request):
-    if request.method == 'POST':
-        email = request.user.email
-        user = User.objects.get(email=email)
-        try:
-            user.username = request.POST['username']
-            user.save()
 
-            profile = Profile(
-                first_name=request.user.first_name,
-                last_name=request.user.last_name,
-                phone_number=request.POST['phone'],
-                gender=request.POST['gender'],
-                user=user
-            )
-            profile.save()
-
-            account = Account(
-                profile=profile,
-                user=user
-            )
-            account.save()
-                
-            return redirect('home')
-        except:
-            return render(request, 'register.html', {
-                'warning': "This username has already been taken"
-            })
-    return render(request,'register.html',{})
+    return render(request, 'auth.html', {
+        'warning': '',
+        'login': False,
+        'signup': True,
+        'oauth': True
+    })
 
 def change_password(request):
     if not request.user.is_authenticated:

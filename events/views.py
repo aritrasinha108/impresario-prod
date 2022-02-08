@@ -180,24 +180,22 @@ def my_events(request):
     events = list(filter(lambda x : x['organizer']['email'] == 'c_pk8tirrl4j7c9r9ee1o32c7rho@group.calendar.google.com', events))
     return JsonResponse(events, safe=False)
     
-def personal_cal(request):
-    # Creating a Google Calendar API client
-    token = SocialToken.objects.get(account__user=request.user, account__provider='google')
-    credentials = Credentials(
-        token=token.token,
-        refresh_token=token.token_secret,
-        token_uri='https://oauth2.googleapis.com/token',
-        client_id=settings.OAUTH_CLIET_ID,
-        client_secret=settings.OAUTH_CLIENT_SECRET
-    )
-    service = build('calendar', 'v3', credentials=credentials)
-    events = service.events().list(calendarId='primary').execute()['items']
-    events = list(filter(lambda x : x['organizer']['email'] == 'c_pk8tirrl4j7c9r9ee1o32c7rho@group.calendar.google.com', events))
-    return render(request, 'my_cal.html', {
-        'cal_url': request.user.email
-    })
-
 def view_calendar(request):
-    if not request.user.is_authenticated:
-        return redirect('accounts:login')
-    return render(request, 'calendar.html', {'user': request.user})
+    # Creating a Google Calendar API client
+    try:
+        token = SocialToken.objects.get(account__user=request.user, account__provider='google')
+        credentials = Credentials(
+            token=token.token,
+            refresh_token=token.token_secret,
+            token_uri='https://oauth2.googleapis.com/token',
+            client_id=settings.OAUTH_CLIET_ID,
+            client_secret=settings.OAUTH_CLIENT_SECRET
+        )
+        service = build('calendar', 'v3', credentials=credentials)
+        events = service.events().list(calendarId='primary').execute()['items']
+        events = list(filter(lambda x : x['organizer']['email'] == 'c_pk8tirrl4j7c9r9ee1o32c7rho@group.calendar.google.com', events))
+        return render(request, 'my_cal.html', {
+            'cal_url': request.user.email
+        })
+    except:
+        return render(request, 'calendar.html', {'user': request.user})
