@@ -1,31 +1,23 @@
-{% extends 'old_layout.html' %}
+{% extends 'team_layout.html' %}
 
 {% load static %}
 
-{% block title %} Status change {% endblock %}
-
-{% block active %}
-  <li><a href="{% url 'home' %}">HOME</a></li>
-  <li ><a href="{% url 'organisations:org_tree' %}">EXISTING TEAMS</a></li>  
-  <li class="active"><a href="{% url 'organisations:new_org' %}">CREATE TEAM</a></li>
-  {% comment %} <li><a href="#">TEAM REQUESTS</a></li> {% endcomment %}
-  <li><a href="{% url 'organisations:events:view_calendar' %}">CALENDAR</a></li>
-{% endblock %}
+{% block title %} Demote {% endblock %}
 
 {% block body %}
-  <div class="wrapper fadeInDown">
-    <div id="formContent">
-      <h1> Change Status </h1>
-      <form method="post" >
-        {% csrf_token %}
-        <label for="team_members">Team members:</label><br />
-        <div id="team_members" multiple="true" name="checks"></div>
-        <br/>
-        <input type="submit" class = "fadeIn" value="Change status to participant"><br/>
-        {% comment %} {% if warning %} {{ warning }} {% endif %} {% endcomment %}
-      </form>
-    </div>
+<div class="container2" id="makemember">
+  <form class="card1" method="post">
+    {% csrf_token %}
+      <h1>Change Status</h1>
+      <div class="content1">
+        <h2>Admins:</h2>
+        <div id="team-members" multiple="true" name="checks"></div>
+      </div>
+      <button class="admin">Make Member</button>
   </div>
+</div>
+
+</div>
   <script>
     var ids = [];
     var names = [];

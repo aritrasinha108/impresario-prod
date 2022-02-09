@@ -17,44 +17,34 @@
         <script src="{% static 'js/nav.js' %}" charset="utf-8" type="module"></script>
     </head>
     <style>
-      body {
-        overflow: scroll;
-      }
       {% block style %}
       {% endblock %}
     </style>
     <body>
-        <div class="partX">
-            <header>
-                <nav>
-                    <a href="{% url 'home' %}">
-                      <div class="logo"><img src="{% static 'assets/logo.jpg' %}" alt="" class="iconX" /></div>
-                    </a>
-                    <ul class="nav-links">
-                        <li><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="{% url 'organisations:new_org' %}">Create Team</a></li>
-                        <li><a href="{% url 'organisations:org_tree' %}">Existing Teams</a></li>
-                        <li><a href="{% url 'organisations:events:calendar' %}">Calender</a></li>
-                        <li><a href="{% url 'contacts' %}">Contact</a></li>
-                    </ul>
-                    <div class="burger">
-                        <div class="line1"></div>
-                        <div class="line2"></div>
-                        <div class="line3"></div>
-                    </div>
-                    <a href="{% url 'accounts:logout' %}">
-                      <button class="option">LOGOUT</button>
-                    </a>
-                </nav>
-            </header>
-            {% if warning%}
-              <div class="alert alert-primary" role="alert">
-                {{ warning}}
-              </div>
-            {% endif %}
-            {% block body %}
-            {% endblock %}
-        </div>      
+        <header>
+            <nav>
+                <a href="{% url 'home' %}">
+                  <div class="logo"><img src="{% static 'assets/logo.jpg' %}" alt="" class="iconX" /></div>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'organisations:new_org' %}">Create Team</a></li>
+                    <li><a href="{% url 'organisations:org_tree' %}">Existing Teams</a></li>
+                    <li><a href="{% url 'organisations:events:calendar' %}">Calender</a></li>
+                    <li><a href="{% url 'contacts' %}">Contact</a></li>
+                </ul>
+                <div class="burger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+                <a href="{% url 'accounts:logout' %}">
+                  <button class="option">LOGOUT</button>
+                </a>
+            </nav>
+        </header>
+        {% block body %}
+        {% endblock %}
     </body>
 </html>
 

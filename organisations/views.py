@@ -291,7 +291,8 @@ def change_role(request, org_id):
         return render(request, 'change_role.html', {
             'memberships': memberships,
             'warning': warning,
-            'user': request.user
+            'user': request.user,
+            'org': Organization.objects.get(pk=org_id)
         })
     else:
         return redirect('accounts:login')
@@ -311,10 +312,12 @@ def dismiss_admin(request, org_id):
                 MembershipLevel.change_role_participant(members, org_id)
                 warning = "Role changed to participant"
         memberships = MembershipLevel.objects.filter(organization__id=org_id, role=1)
+        print(memberships)
         return render(request, 'participant.html', {
             'memberships': memberships,
             'warning': warning,
-            'user': request.user
+            'user': request.user,
+            'org': Organization.objects.get(pk=org_id)
         })
     else:
         return redirect('accounts:login')
@@ -371,11 +374,12 @@ def leave_team(request, org_id):
                         MembershipLevel.leave_team(p, org)
                         Organization.delete_org(org)
                         warning = "Left the team"
-        return render(request, 'leave_team.html', {
-            'warning': warning,
-            'user': request.user,
-            'name': name
-        })
+        return redirect('home')
+        # return render(request, 'leave_team.html', {
+        #     'warning': warning,
+        #     'user': request.user,
+        #     'name': name
+        # })
     else:
         return redirect('accounts:login')
 

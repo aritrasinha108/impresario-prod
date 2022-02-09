@@ -1,30 +1,33 @@
-{% extends 'old_layout.html' %} 
+{% extends 'team_layout.html' %} 
 
 {% load static %}
 
-{% block title %} Status change {% endblock %}
+{% block title %} Change Role {% endblock %}
 
-{% block active %}
-  <li><a href="{% url 'home' %}">HOME</a></li>
-  <li ><a href="{% url 'organisations:org_tree' %}">EXISTING TEAMS</a></li>  
-  <li class="active" ><a href="{% url 'organisations:new_org' %}">CREATE TEAM</a></li>
-  {% comment %} <li><a href="#">TEAM REQUESTS</a></li> {% endcomment %}
-  <li><a href="{% url 'organisations:events:view_calendar' %}">CALENDAR</a></li>
+{% block style %}
+body {
+  overflow: hidden;
+}
+.card {
+  display: block;
+  text-align: center;
+}
 {% endblock %}
 
 {% block body %}
-  <div class="wrapper fadeInDown">
-    <div id="formContent">
-      <h1> Change Status </h1>
-      <form method="post" >
-        {% csrf_token %}
-        <label for="team_members">Team members:</label><br/>
-        <div id="team_members" multiple="true" name="checks"></div>
-        <br/>
-        <input type="submit" class = "fadeIn" value="Change status to admin"><br/>
-        {% comment %} {% if warning %} {{ warning }} {% endif %} {% endcomment %}
-      </form>
-    </div>
+  <div class="container1" id="makeadmin">
+    <form class="card" method="POST">
+      {% csrf_token %}
+        <h1>Change Status</h1>
+        {% if warning %}
+          {{ warning }}
+        {% endif %}
+        <div class="contentX">
+            <h2>Team Members</h2>
+            <div id="team-members" multiple="true" name="checks"></div>
+        </div>
+        <button class="admin">Make Admin</button>
+      </from>
   </div>
   <script>
     var ids = [];
@@ -38,6 +41,6 @@
       console.log(names);
       console.log(admin);
     ("{% endfor %}");
-</script>
+  </script>
   <script src="{% static 'js/create_team.js' %}"></script>
 {% endblock %}

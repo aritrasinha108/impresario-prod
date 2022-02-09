@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700&family=Lexend+Deca&display=swap');  
+*{  
+     padding: 0;  
+     margin: 0;  
+     box-sizing: border-box;  
+     
+}  
+.box-conatiner{  
+     width: 100%;  
+     max-width: 1440px;  
+     display: flex;  
+     justify-content: center;  
+     align-items: center;  
+     flex-flow: wrap;  
+   
+}  
+.box{  
+     width: 269px;  
+     padding: 15px;  
+     min-height: 430px;  
+}  
+.box1{  
+     background-color: hsl(31,77%,52%);  
+     border-top-left-radius: 10px;  
+     border-bottom-left-radius: 10px;  
+}  
+.box2{  
+     background-color: hsl(184,100%,22%);  
+}  
+.box3{  
+     background-color: hsl(179,100%,13%);  
+     border-top-right-radius: 10px;  
+     border-bottom-right-radius: 10px;  
+}  
+.content{  
+     padding: 10px;  
+}  
+h1{  
+     color: hsl(0,0%,95%);  
+     text-transform: uppercase;  
+     font-family: 'Lexend Deca', sans-serif;  
+     margin: 20px 0;  
+}  
+p{  
+     color: hsla(0,0%,100%,0.75);  
+     font-family: 'Big Shoulders Display', cursive;  
+}  
+.btn{  
+     margin: 60px 0;  
+     padding: 15px 40px;  
+     border: 0;  
+     border-radius: 30px;  
+     outline: none;  
+     background-color: #FFF;  
+     font-size: 15px;  
+     cursor: pointer;  
+     font-family: 'Lexend Deca', sans-serif;  
+     font-weight: 700;  
+     position: relative;
+     left: 10%;
+}  
+.btn1{  
+     color: hsl(31, 77%, 52%);  
+}  
+.btn2{  
+     color: hsl(184, 100%, 22%);  
+}  
+.btn3{  
+     color: hsl(179, 100%, 13%);  
+}  
+.btn:hover{  
+     background-color: transparent;  
+     border: 2px solid #FFF;  
+     color: #FFF;  
+     transition: 0.4s;  
+}  
+
+/* my add-on */
+
+.first,.second,.third{
+    font-size: 1.2rem;
+}
+.second{
+ letter-spacing: 1px;
+}
+.btn1{
+   position: relative;
+   bottom: -5rem;
+}
+.btn2{
+     position: relative;
+   bottom: -5.5rem;
+
+}
+.btn3{
+    position: relative;
+    bottom: -7.85rem;
+}
+p{
+    font-size: 1.1rem;
+}
+
+.head{
+    font-size: 2.6rem;
+    color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   margin-right: 2rem;
+   font-family: 'Syne Tactile', cursive;
+}
+
+.more{
+    position: relative;
+    border: none;
+    border-radius: 9px;
+    outline: none;
+    background-color: aqua;
+    height: 39px;
+    width: 7rem;
+   font-size: 1.1rem;
+   color: white;
+   font-weight: 600;
+   left: 23%;
+   transition: all 0.3s linear;
+   cursor: pointer;
+   box-shadow: 0 12px 12px 2px rgba(0, 0, 0,0.2);
+}
+.small{
+   
+    position: relative;
+    right: 2rem;
+    bottom: 5rem;
+    
+}
+.more:hover{
+    letter-spacing: 1px;
+}
+.more:active{
+    transform: scale(0.9);
+}
+
+@media screen and (max-width:768px) {
+     .small{
+          position: relative;
+          top: -1rem;
+          left: 1rem;
+     }
+}

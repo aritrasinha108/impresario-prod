@@ -12,5 +12,5 @@
             "</input>";   
         options.push(option);
     }
-    $("#team_members").append(options.join("<br>"));
+    $("#team-members").append(options.join("<br>"));
 }) ();
