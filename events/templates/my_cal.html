@@ -1,0 +1,10 @@
+{% extends 'layout.html' %} 
+
+{% block title %}
+   Calendar
+{% endblock %}
+
+{% block body %}
+    <iframe src="https://calendar.google.com/calendar/embed?src={{ cal_url }}&ctz=Asia%2FKolkata" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+{% endblock %}
+

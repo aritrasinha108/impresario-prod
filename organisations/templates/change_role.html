@@ -1,0 +1,46 @@
+{% extends 'team_layout.html' %} 
+
+{% load static %}
+
+{% block title %} Change Role {% endblock %}
+
+{% block style %}
+body {
+  overflow: hidden;
+}
+.card {
+  display: block;
+  text-align: center;
+}
+{% endblock %}
+
+{% block body %}
+  <div class="container1" id="makeadmin">
+    <form class="card" method="POST">
+      {% csrf_token %}
+        <h1>Change Status</h1>
+        {% if warning %}
+          {{ warning }}
+        {% endif %}
+        <div class="contentX">
+            <h2>Team Members</h2>
+            <div id="team-members" multiple="true" name="checks"></div>
+        </div>
+        <button class="admin">Make Admin</button>
+      </from>
+  </div>
+  <script>
+    var ids = [];
+    var names = [];
+    var admin = [];
+    ("{% for membership in memberships %}");
+      ids.push("{{membership.user.id}}");
+      names.push("{{membership.user}}");
+      admin.push("{{membership.role}}");
+      console.log(ids);
+      console.log(names);
+      console.log(admin);
+    ("{% endfor %}");
+  </script>
+  <script src="{% static 'js/create_team.js' %}"></script>
+{% endblock %}

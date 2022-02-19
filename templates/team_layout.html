@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <title>Impressario | {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/team_layout.css' %}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+        <script src="{% static 'js/team_nav.js' %}" type="module"></script>
+        {% block links %}{% endblock %}
+        <style>
+           {% block style %}
+           {% endblock %}
+           .logo a:visited,
+           .logo a:hover,
+           .logo a:link,
+           .logo a {
+            color: white;
+            text-decoration: none;
+           }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <div class="menu-icon">
+                <span class="fas fa-bars"> </span>
+            </div>
+            <div class="logo">
+                <a href="{% url 'home' %}">Impresario</a>
+            </div>
+            <div class="nav-items">
+                <li><a href="{% url 'organisations:events:add_event' org.id %}">Add Event</a></li>
+                <li><a href="{% url 'organisations:new_team' org.id %}">Create Team </a></li>
+                <li><a href="{% url 'organisations:team_requests' org.id %}">Requests</a></li>
+                <li><a href="{% url 'organisations:change_role' org.id %}">Make Admin </a></li>
+                <li><a href="{% url 'organisations:dismiss_admin' org.id %}">Make Member </a></li>
+                <li><a href="{% url 'organisations:edit_team' org.id %}">Edit</a></li>
+                <li><a onclick="return confirm('Are you sure to leave the team?')" href="{% url 'organisations:leave_team' org.id %}" target="_self">Leave</a></li>
+            </div>
+            <div class="search-icon">
+                <span class="fas fa-search"> </span>
+            </div>
+            <div class="cancel-icon">
+                <span class="fas fa-times"> </span>
+            </div>
+            <form action="#">
+                <input type="search" class="search-data" placeholder="Search" required />
+                <button type="submit" class="fas fa-search"></button>
+            </form>
+        </nav>
+        {% block body %}{% endblock %}
+    </body>
+</html>

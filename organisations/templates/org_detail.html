@@ -1,0 +1,69 @@
+{% extends 'team_layout.html' %}
+
+{% load static %}
+
+{% block title %}
+    {{ org.name }}
+{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/team.css' %}">  
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Source+Sans+Pro&family=Syne+Tactile&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block style %}
+.box-conatiner {
+    <!-- display: none; -->
+    display: block;
+    margin-top: 3rem;
+}
+{% endblock %}
+
+{% block body %}
+    <div class="box-conatiner">  
+        <div class="small">
+            <h1 class="head">{{ org.name }}</h1>
+        </div>
+       <div class="box box1">  
+            <div class="">  
+                 <img src="{% static 'assets/dev1.svg' %}" width="70px">  
+                 <h1 class="first">Sub-Organisations</h1>
+                 {% if child_org %}
+                    {% for child in child_org %}
+                        <p>{{ child.name }}</p>
+                    {% endfor %}
+                 {% else %}
+                    <p>No sub-organisations</p>
+                 {% endif %}
+            </div>  
+       </div>  
+       <div class="box box2">  
+            <div class="">  
+                <img src="{% static 'assets/dev2.svg' %}" width="70px">  
+                <h1 class="second">Members</h1>  
+                {% for m in members %}
+                    {% if m.role == 1 %}
+                        <p>{{m.user.username}} (Admin)</p>
+                    {% else %}
+                        <p>{{m.user.username}}</p>
+                    {% endif %}
+                {% endfor %} 
+            </div>  
+       </div>  
+       <div class="box box3">  
+            <div class="">  
+                <img src="{% static 'assets/dev3.svg' %}" width="70px">  
+                <h1 class="third">Upcoming Events</h1>  
+                {% if org.event.all %}
+                    {% for e in org.event.all %}
+                        <p><a href="{% url 'organisations:events:view_event' e.id %}">
+                            {{ e.title}}
+                        </a></p>
+                    {% endfor %} 
+                {% else %}
+                    <p>No events scheduled</p>
+                {% endif %}
+            </div>  
+       </div>  
+  </div>  
+{% endblock %}

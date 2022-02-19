@@ -1,0 +1,36 @@
+{% extends 'old_layout.html' %}
+
+{% block title %}
+  Settings
+{% endblock %}
+
+{% block active %} 
+  <li class="active"><a href="{% url 'home' %}">HOME</a></li>
+  <li ><a href="/scheduling">EXISTING TEAMS</a></li>  
+  <li><a href="{% url 'organisations:new_org' %}">CREATE TEAM</a></li>
+  {% comment %} <li><a href="{% url 'organisations:team_requests' par_id %}">TEAM REQUESTS</a></li> {% endcomment %}
+  <li><a href="{% url 'organisations:events:view_calendar' %}">CALENDAR</a></li>
+{% endblock %}
+
+{% block body %}
+  <div class="wrapper fadeInDown">
+    <div id="formContent">
+      <form action="{% url 'accounts:change_password' %}" method='post'>
+        {%csrf_token%}
+        <p>Change Password</p>
+        <input type="text" id="current password" class="fadeIn second" name="cur_password" placeholder="current password">
+        <input type="text" id="new password" class="fadeIn third" name="password" placeholder="new password">
+        <input type="text" id="confirm new password" class="fadeIn fourth" name="password2" placeholder="confirm new password">
+        <input type="submit" class="fadeIn fourth" value="Done">
+        <div>
+          {% for message in messages %}
+            <h3>{{message}}</h3>
+          {% endfor %}
+        </div>
+        <br>
+      </form>
+      <p class="btn1" style="font: black;"><a href="{% url 'home' %}" style="text-decoration: none;">Home</a></p>
+      <p class="btn1" style="font: black;"><a href="{% url 'accounts:logout' %}" style="text-decoration: none;">Logout</a></p>
+    </div>
+  </div>
+{% endblock %}

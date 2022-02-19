@@ -1,0 +1,32 @@
+{% extends 'team_layout.html' %}
+
+{% load static %}
+
+{% block title %} Demote {% endblock %}
+
+{% block body %}
+<div class="container2" id="makemember">
+  <form class="card1" method="post">
+    {% csrf_token %}
+      <h1>Change Status</h1>
+      <div class="content1">
+        <h2>Admins:</h2>
+        <div id="team-members" multiple="true" name="checks"></div>
+      </div>
+      <button class="admin">Make Member</button>
+  </div>
+</div>
+
+</div>
+  <script>
+    var ids = [];
+    var names = [];
+    var admins = [];
+    ("{% for membership in memberships %}");
+      ids.push("{{membership.user.id}}");
+      names.push("{{membership.user}}");
+      admins.push("{{membership.role}}");
+    ("{% endfor %}");
+  </script>
+  <script src="{% static 'js/create_participant.js' %}"></script>
+{% endblock %}

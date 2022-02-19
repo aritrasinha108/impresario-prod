@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block title %}
+    Organisations
+{% endblock %}
+
+{% block style %}
+.main-board h1 {
+    font-family: Aerial;
+    color: white;
+}
+.context a {
+    display: inline-block;
+    background: white;
+    color: black;
+    padding: 10px 30px;
+    margin: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.2), 0px 0px 50px rgba(0, 0, 0, 0.2);
+}
+.context a:hover {
+    color: black;
+    transform: scale(1.1);
+}
+
+.main-board {
+    top: 2rem;
+    width: fit-content;
+    padding: 50px 120px;
+    height: fit-content;
+}
+body {
+    overflow-y: scroll;
+}
+.image {
+    position: absolute;
+    bottom: 10vh;
+    left: 50vw;
+    height: 60vh;
+}
+{% endblock %}
+
+{% block body %}
+    {% load my_filter %}
+    <section class="existing-teams" id="page4">
+        <div class="main-board">
+            <div class="org-lists">
+                <ul class="context">
+                    {% for org in listo %} 
+                        {{ ""|indent_it:org.1 }}
+                        <a href="{% url 'organisations:org_detail' org.2 %}">{{org.0}}</a>
+                        <br>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+    <img src="{% static 'assets/log.svg' %}" class="image" alt="" />
+{% endblock %}

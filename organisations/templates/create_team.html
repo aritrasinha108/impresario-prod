@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block title %}
+  Create Team
+{% endblock %}
+
+{% block style %}
+  .back-field {
+    background-color: #f0f0f0;
+    width: 100%;
+    height: 70px;
+    background-color: #f0f0f0;
+    margin: 10px 0;
+    border-radius: 55px;
+    display: grid;
+    grid-template-columns: 15% 85%;
+    <!-- padding: 0 0.4rem; -->
+    <!-- position: relative; -->
+  }
+  .back-field i {
+    text-align: center;
+    line-height: 10px;
+    color: #acacac;
+    font-size: 1.1rem;
+    position: relative;
+    top: 1.8rem;
+    left: 1rem;
+    color: #19d5bc;
+  }
+  .back-field input{
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    position: relative;
+    left: 2rem;
+  }
+
+  .back-field input::placeholder {
+    color: #aaa;
+    font-weight: 500;
+  }
+
+  .container {
+    width: 0%;
+  }
+  .head {
+    text-align: center;
+    display: block;
+  }
+
+  .create-form {
+    display: block;
+    text-align: center;
+  }
+{% endblock %}
+
+{% block body %}
+  <section>
+    <div class="containerall">
+      <div class="container">
+        <div class="card">
+          <form method="post" class="create-form">
+            <h1 class="title"><span class="head">CREATE TEAM</span></h1>
+            {% csrf_token %}
+            <div class="back-field">
+              <i class="fas fa-users"></i>
+              <input type="text" name="name" id="" placeholder="Name">
+            </div>
+            <div class="back-field">
+              <i class="far fa-comments"></i>
+              <input type="text" name="description" id="" placeholder="Description">
+            </div>
+            <label for="team-members" style="font-weight: bold;">Members</label>
+            <div id="team-members" multiple="true" name="checks"></div>
+            <button type="submit" name="button" class="btn">C<span class="btn2">reate</span> T<span class="btn2">eam</span></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    var ids = [];
+    var names = [];
+    var admin = [];
+    ("{% for membership in memberships %}");
+      ids.push("{{membership.user.id}}");
+      names.push("{{membership.user}}");
+      admin.push("{{membership.role}}");
+    ("{% endfor %}");
+    console.log(ids);
+    console.log(names);
+  </script>
+  <script src="{% static 'js/create_team.js' %}"></script>
+{% endblock %}

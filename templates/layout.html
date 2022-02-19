@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Impressario | {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/landing/final.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/landing/responsive.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/landing/styles.css' %}" />
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Source+Sans+Pro&family=Syne+Tactile&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
+        {% block links %}
+        {% endblock %}
+        <script src="{% static 'js/nav.js' %}" charset="utf-8" type="module"></script>
+    </head>
+    <style>
+      {% block style %}
+      {% endblock %}
+    </style>
+    <body>
+        <header>
+            <nav>
+                <a href="{% url 'home' %}">
+                  <div class="logo"><img src="{% static 'assets/logo.jpg' %}" alt="" class="iconX" /></div>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'organisations:new_org' %}">Create Team</a></li>
+                    <li><a href="{% url 'organisations:org_tree' %}">Existing Teams</a></li>
+                    <li><a href="{% url 'organisations:events:calendar' %}">Calender</a></li>
+                    <li><a href="{% url 'contacts' %}">Contact</a></li>
+                </ul>
+                <div class="burger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+                <a href="{% url 'accounts:logout' %}">
+                  <button class="option">LOGOUT</button>
+                </a>
+            </nav>
+        </header>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>
+
+

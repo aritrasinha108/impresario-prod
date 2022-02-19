@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+	Home
+{% endblock %}
+
+{% block style %}
+	body {
+		overflow: hidden;
+	}
+	.circle {
+		margin-top: 45vh;
+		margin-left: 50vw;
+		z-index: 0;
+	}
+	.textbox {
+		margin-left: 15vw;
+		z-index: 2;
+	}
+	#username {
+		font-size: 1.5rem
+	}
+{% endblock %}
+
+{% block body %}
+<div class="partX">
+	<div class="content">
+		<div class="textbox">
+			<h1><span class="totle">Impresario</span></h1>
+			<p>
+				Hello <span id="username">{{ account }}</span>, Hope you're doing well!! We present to you Impresario, your go-to appilication to keep track of your events and your organisations. You can create an organisation with any no. of users you want. You along with other members can create a sub org which will be a child of the org that you have created. Each organisation can have any no. of events and all of those events will be stored in the calendar and all the attendees for an event get google calendar invitations. You can view the club calendar in the calendars page to see all the events.
+			</p>
+			{% if not user.is_authenticated %}
+				<a href="{% url 'accounts:auth' %}">
+					<button class="pad">Login</button>
+				</a>
+			{% endif %}
+		</div>
+		<div class="circle">
+			<div class="outer">
+				<div class="inner"></div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
