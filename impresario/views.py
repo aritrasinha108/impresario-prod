@@ -1,13 +1,14 @@
-from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from django.contrib.auth.models import User,auth
-from userauth.models import Account, Profile
-
+from django.shortcuts import render, redirect
+from accounts.models import Account
 
 def index(request):
     if request.user.is_authenticated:
-        account = Account.objects.get(user=request.user.id)
-        print(account) 
-        return render(request,'home.html',{'account':account})
+        try:
+            account = Account.objects.get(user=request.user.id)
+        except:
+            return redirect('accounts:register')
+        return render(request, 'home.html', {
+            'account': account
+        })
     else:
-        return render(request,'index.html')
+        return render(request, 'index.html', {})
